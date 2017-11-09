@@ -1,0 +1,28 @@
+target_sources(
+    ${PROJECT_NAME}
+
+    PUBLIC
+        "${CMAKE_CURRENT_LIST_DIR}/CodeString.h"
+        "${CMAKE_CURRENT_LIST_DIR}/DataElement.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Dataset.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Date.h"
+        "${CMAKE_CURRENT_LIST_DIR}/File.h"
+        "${CMAKE_CURRENT_LIST_DIR}/FileMetaInfo.h"
+        "${CMAKE_CURRENT_LIST_DIR}/LongString.h"
+        "${CMAKE_CURRENT_LIST_DIR}/OtherByte.h"
+        "${CMAKE_CURRENT_LIST_DIR}/PersonName.h"
+        "${CMAKE_CURRENT_LIST_DIR}/ShortString.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Tag.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Time.h"
+        "${CMAKE_CURRENT_LIST_DIR}/UniqueIdentifier.h"
+        "${CMAKE_CURRENT_LIST_DIR}/UnsignedLong.h"
+        "${CMAKE_CURRENT_LIST_DIR}/ValueRepresentation.h"
+
+    PRIVATE
+        "${CMAKE_CURRENT_LIST_DIR}/Dataset.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/File.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/FileMetaInfo.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/Tag.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/UniqueIdentifier.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/ValueRepresentation.cpp"
+)
