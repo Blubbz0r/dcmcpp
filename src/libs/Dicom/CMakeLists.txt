@@ -19,6 +19,7 @@ target_sources(
         "${CMAKE_CURRENT_LIST_DIR}/ValueRepresentation.h"
 
     PRIVATE
+        "${CMAKE_CURRENT_LIST_DIR}/DataElement.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Dataset.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/File.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/FileMetaInfo.cpp"
