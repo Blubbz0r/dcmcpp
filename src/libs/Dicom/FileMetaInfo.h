@@ -82,6 +82,7 @@ public:
 
     // TODO: doc
     const DataElement& dataElement(const Tag& tag) const;
+    const std::vector<DataElement> dataElements() const;
 
 private:
     std::vector<DataElement>::const_iterator findDataElementByTag(const Tag& tag) const;

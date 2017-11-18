@@ -93,6 +93,11 @@ const DataElement& FileMetaInfo::dataElement(const Tag& tag) const
     throw std::logic_error("No data element for tag '" + tagToString(tag) + "'");
 }
 
+const std::vector<DataElement> FileMetaInfo::dataElements() const
+{
+    return m_dataElements;
+}
+
 std::vector<DataElement>::const_iterator FileMetaInfo::findDataElementByTag(const Tag& tag) const
 {
     return std::find_if(m_dataElements.cbegin(), m_dataElements.cend(), [&tag](const DataElement& element)
