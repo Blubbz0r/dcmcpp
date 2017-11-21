@@ -22,7 +22,7 @@ std::string FileMetaInfo::preamble() const
 
 UnsignedLong FileMetaInfo::groupLength() const
 {
-    const auto it = findDataElementByTag(FileMetaInformationGroupLength);
+    const auto it = findDataElementByTag(m_dataElements, FileMetaInformationGroupLength);
     if (it != m_dataElements.cend())
         return std::get<UnsignedLong>(it->value);
     else
@@ -31,7 +31,7 @@ UnsignedLong FileMetaInfo::groupLength() const
 
 OtherByte FileMetaInfo::version() const
 {
-    const auto it = findDataElementByTag(FileMetaInformationVersion);
+    const auto it = findDataElementByTag(m_dataElements, FileMetaInformationVersion);
     if (it != m_dataElements.cend())
         return std::get<OtherByte>(it->value);
     else
@@ -40,7 +40,7 @@ OtherByte FileMetaInfo::version() const
 
 UniqueIdentifier FileMetaInfo::mediaStorageSopClassUid() const
 {
-    const auto it = findDataElementByTag(MediaStorageSopClassUid);
+    const auto it = findDataElementByTag(m_dataElements, MediaStorageSopClassUid);
     if (it != m_dataElements.cend())
         return std::get<UniqueIdentifier>(it->value);
     else
@@ -49,7 +49,7 @@ UniqueIdentifier FileMetaInfo::mediaStorageSopClassUid() const
 
 UniqueIdentifier FileMetaInfo::mediaStorageSopInstanceUid() const
 {
-    const auto it = findDataElementByTag(MediaStorageSopInstanceUid);
+    const auto it = findDataElementByTag(m_dataElements, MediaStorageSopInstanceUid);
     if (it != m_dataElements.cend())
         return std::get<UniqueIdentifier>(it->value);
     else
@@ -58,7 +58,7 @@ UniqueIdentifier FileMetaInfo::mediaStorageSopInstanceUid() const
 
 UniqueIdentifier FileMetaInfo::transferSyntaxUid() const
 {
-    const auto it = findDataElementByTag(TransferSyntaxUid);
+    const auto it = findDataElementByTag(m_dataElements, TransferSyntaxUid);
     if (it != m_dataElements.cend())
         return std::get<UniqueIdentifier>(it->value);
     else
@@ -67,7 +67,7 @@ UniqueIdentifier FileMetaInfo::transferSyntaxUid() const
 
 UniqueIdentifier FileMetaInfo::implementationClassUid() const
 {
-    const auto it = findDataElementByTag(ImplementationClassUid);
+    const auto it = findDataElementByTag(m_dataElements, ImplementationClassUid);
     if (it != m_dataElements.cend())
         return std::get<UniqueIdentifier>(it->value);
     else
@@ -76,34 +76,16 @@ UniqueIdentifier FileMetaInfo::implementationClassUid() const
 
 std::string FileMetaInfo::implementationVersionName() const
 {
-    const auto it = findDataElementByTag(ImplementationVersionName);
+    const auto it = findDataElementByTag(m_dataElements, ImplementationVersionName);
     if (it != m_dataElements.cend())
         return std::get<UniqueIdentifier>(it->value);
     else
         throw std::runtime_error("No implementation version name"); // TODO: proper exception
 }
 
-const DataElement& FileMetaInfo::dataElement(const Tag& tag) const
-{
-    const auto it = findDataElementByTag(tag);
-    if (it != m_dataElements.cend())
-        return *it;
-
-    // TODO: proper exception
-    throw std::logic_error("No data element for tag '" + tagToString(tag) + "'");
-}
-
-const std::vector<DataElement> FileMetaInfo::dataElements() const
+const DataElements FileMetaInfo::dataElements() const
 {
     return m_dataElements;
-}
-
-std::vector<DataElement>::const_iterator FileMetaInfo::findDataElementByTag(const Tag& tag) const
-{
-    return std::find_if(m_dataElements.cbegin(), m_dataElements.cend(), [&tag](const DataElement& element)
-    {
-        return element.tag == tag;
-    });
 }
 
 }

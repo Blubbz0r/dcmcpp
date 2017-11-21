@@ -47,8 +47,54 @@ static constexpr Tag ContentDate{ 0x0008, 0x0023 };
 static constexpr Tag StudyTime{ 0x0008, 0x0030 };
 static constexpr Tag ContentTime{ 0x0008, 0x0033 };
 static constexpr Tag AccessionNumber{ 0x0008, 0x0050 };
+static constexpr Tag RetrieveAeTitle{ 0x0008, 0x0054 };
 static constexpr Tag Modality{ 0x0008, 0x0060 };
 static constexpr Tag Manufacturer{ 0x0008, 0x0070 };
 static constexpr Tag ReferringPhysiciansName{ 0x0008, 0x0090 };
+static constexpr Tag CodeValue{ 0x0008, 0x0100 };
+static constexpr Tag CodingSchemeDesignator{ 0x0008, 0x0102 };
+static constexpr Tag CodeMeaning{ 0x0008, 0x0104 };
+static constexpr Tag CodingSchemeUid{ 0x0008, 0x010C };
+static constexpr Tag CodingSchemeIdentificationSequence{ 0x0008, 0x0110 };
+static constexpr Tag CodingSchemeName{ 0x0008, 0x0115 };
+static constexpr Tag CodingSchemeResponsibleOrganization{ 0x0008, 0x0116 };
+static constexpr Tag StudyDescription{ 0x0008, 0x1030 };
+static constexpr Tag SeriesDescription{ 0x0008, 0x103E };
+static constexpr Tag ReferencedPerformedProcedureStepSequence{ 0x0008, 0x1111 };
+static constexpr Tag ReferencedSeriesSequence{ 0x0008, 0x1115 };
+static constexpr Tag ReferencedSopClassUid{ 0x0008, 0x1150 };
+static constexpr Tag ReferencedSopInstanceUid{ 0x0008, 0x1155 };
+static constexpr Tag ReferencedSopSequence{ 0x0008, 0x1199 };
+
+static constexpr Tag PatientsName{ 0x0010, 0x0010 };
+static constexpr Tag PatientId{ 0x0010, 0x0020 };
+static constexpr Tag PatientsBirthDate{ 0x0010, 0x0030 };
+static constexpr Tag PatientsSex{ 0x0010, 0x0040 };
+
+static constexpr Tag StudyInstanceUid{ 0x0020, 0x000D };
+static constexpr Tag SeriesInstanceUid{ 0x0020, 0x000E };
+static constexpr Tag StudyId{ 0x0020, 0x0010 };
+static constexpr Tag SeriesNumber{ 0x0020, 0x0011 };
+static constexpr Tag InstanceNumber{ 0x0020, 0x0013 };
+
+static constexpr Tag RelationshipType{ 0x0040, 0xA010 };
+static constexpr Tag ValueType{ 0x0040, 0xA040 };
+static constexpr Tag ConceptNameCodeSequence{ 0x0040, 0xA043 };
+static constexpr Tag ContinuityOfContent{ 0x0040, 0xA050 };
+static constexpr Tag VerifyingOrganization{ 0x0040, 0xA027 };
+static constexpr Tag VerificationDateTime{ 0x0040, 0xA030 };
+static constexpr Tag VerifyingObserverSequence{ 0x0040, 0xA073 };
+static constexpr Tag VerifyingObserverName{ 0x0040, 0xA075 };
+static constexpr Tag VerifyingObserverIdentificationCodeSequence{ 0x0040, 0xA088 };
+static constexpr Tag TextValue{ 0x0040, 0xA160 };
+static constexpr Tag PerformedProcedureCodeSequence{ 0x0040, 0xA372 };
+static constexpr Tag CurrentRequestedProcedureEvidenceSequence{ 0x0040, 0xA375 };
+static constexpr Tag PertinentOtherEvidenceSequence{ 0x0040, 0xA385 };
+static constexpr Tag CompletionFlag{ 0x0040, 0xA491 };
+static constexpr Tag VerificationFlag{ 0x0040, 0xA493 };
+static constexpr Tag ContentSequence{ 0x0040, 0xA730 };
+
+static constexpr Tag ItemDelimitationItem{ 0xFFFE, 0xE00D };
+static constexpr Tag SequenceDelimitationItem{ 0xFFFE, 0xE0DD };
 
 }

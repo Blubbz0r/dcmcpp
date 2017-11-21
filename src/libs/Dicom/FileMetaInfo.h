@@ -18,8 +18,8 @@ namespace dcmcpp
 class FileMetaInfo
 {
 public:
-    explicit FileMetaInfo(std::vector<DataElement> dataElements);
-    FileMetaInfo(std::string ppreamble, std::vector<DataElement> dataElements);
+    explicit FileMetaInfo(DataElements dataElements);
+    FileMetaInfo(std::string ppreamble, DataElements dataElements);
 
     // TODO: add notes from DICOM standard to documentation?
 
@@ -81,15 +81,12 @@ public:
     std::string implementationVersionName() const; // TODO: use proper SH class / typedef once it exists?
 
     // TODO: doc
-    const DataElement& dataElement(const Tag& tag) const;
-    const std::vector<DataElement> dataElements() const;
+    const DataElements dataElements() const;
 
 private:
-    std::vector<DataElement>::const_iterator findDataElementByTag(const Tag& tag) const;
-
     // TODO: we probably need to enforce that preamble is exactly 128 bytes
     std::string m_preamble;
-    std::vector<DataElement> m_dataElements;
+    DataElements m_dataElements;
 };
 
 }

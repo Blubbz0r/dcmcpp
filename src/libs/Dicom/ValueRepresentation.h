@@ -109,8 +109,6 @@ constexpr ValueRepresentation vrFromString(std::string_view vr)
     if (vr.compare("UT") == 0)
         return ValueRepresentation::UT;
 
-    // TODO: finish
-
     // TODO: is it possible to print the string_view as well?
     throw std::logic_error("Unable to convert to ValueRepresentation"); // TODO: proper exception
 }
@@ -127,6 +125,7 @@ constexpr bool hasExtendedLengthEncoding(ValueRepresentation vr)
     case ValueRepresentation::OW:
     case ValueRepresentation::SQ:
     case ValueRepresentation::UN:
+    case ValueRepresentation::UT:
         return true;
 
     default:

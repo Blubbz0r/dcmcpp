@@ -11,6 +11,7 @@ void dumpDataElements(const std::vector<DataElement>& dataElements)
     {
         std::cout << tagToString(dataElement.tag) << '\t';
         std::cout << vrToString(dataElement.valueRepresentation) << '\t';
+        // TODO: value length can have different digits possibly requiring multiple \t...
         std::cout << std::to_string(dataElement.valueLength) << '\t';
         std::cout << valueToString(dataElement.value) << "\t\n";
     }

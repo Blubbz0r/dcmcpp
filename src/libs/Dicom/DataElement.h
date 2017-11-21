@@ -1,15 +1,22 @@
 #pragma once
 
+#include "ApplicationEntity.h"
 #include "CodeString.h"
 #include "Date.h"
+#include "DateTime.h"
+#include "IntegerString.h"
 #include "LongString.h"
 #include "OtherByte.h"
 #include "PersonName.h"
+#include "Sequence.h"
 #include "ShortString.h"
+#include "ShortText.h"
 #include "Tag.h"
 #include "Time.h"
 #include "UniqueIdentifier.h"
+#include "UnlimitedText.h"
 #include "UnsignedLong.h"
+#include "ValueLength.h"
 #include "ValueRepresentation.h"
 
 #include <variant>
@@ -21,12 +28,19 @@ struct DataElement
 {
     Tag tag;
     ValueRepresentation valueRepresentation;
-    int valueLength; // TODO: it int appropriate? could be uint16_t or uint32_t (extended length)?
+    ExtendedValueLength valueLength; // TODO: this could be 16 or 32 bit... we hard-code the bigger type here
 
-    using Value = std::variant<OtherByte, UniqueIdentifier, UnsignedLong>; // TODO: is there a type trait that allows to declare all VRs in the variant even if they have a duplicated underlying type? we are currently missing Date, Time, CodeString, LongString, PersonName and ShortString
+    using Value = std::variant<OtherByte, Sequence, UniqueIdentifier, UnsignedLong>; // TODO: is there a type trait that allows to declare all VRs in the variant even if they have a duplicated underlying type? we are currently missing Date, Time, CodeString, LongString, PersonName, ShortText, IntegerString, ShortString, DateTime, ApplicationEntity, UnlimitedText
     Value value;
 };
 
 std::string valueToString(const DataElement::Value& value);
+
+// TODO: or maybe std::set since elements need to be unique?
+using DataElements = std::vector<DataElement>;
+
+const DataElement& dataElement(const DataElements& dataElements, const Tag& tag);
+DataElements::const_iterator findDataElementByTag(const DataElements& dataElements,
+                                                  const Tag& tag);
 
 }
