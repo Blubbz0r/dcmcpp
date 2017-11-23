@@ -157,6 +157,15 @@ DateTime readDateTime(std::istream& stream, uint32_t valueLength)
     return dateTime;
 }
 
+DecimalString readDecimalString(std::istream& stream, uint32_t valueLength)
+{
+    DecimalString ds;
+    ds.resize(valueLength);
+    stream.read(ds.data(), valueLength);
+    StringUtils::rtrim(ds); // TODO: trim okay?
+    return ds;
+}
+
 IntegerString readIntegerString(std::istream& stream, uint32_t valueLength)
 {
     IntegerString integerString;
@@ -215,6 +224,7 @@ Time readTime(std::istream& stream, uint32_t valueLength)
     Time time;
     time.resize(valueLength);
     stream.read(time.data(), valueLength);
+    StringUtils::rtrim(time); // TODO: trim correct?
     return time;
 }
 
@@ -289,6 +299,22 @@ UnlimitedText readUnlimitedText(std::istream& stream, uint32_t valueLength)
     return ut;
 }
 
+UnsignedLong readUnsignedLong(std::istream& stream, uint32_t valueLength)
+{
+    static constexpr auto UnsignedLongSize = sizeof(UnsignedLong);
+    char ul[UnsignedLongSize];
+    stream.read(ul, UnsignedLongSize);
+    return LittleEndian::toIntegral<uint32_t>(ul);
+}
+
+UnsignedShort readUnsignedShort(std::istream& stream, uint32_t valueLength)
+{
+    static constexpr auto UnsignedShortSize = sizeof(UnsignedShort);
+    char us[UnsignedShortSize];
+    stream.read(us, valueLength);
+    return LittleEndian::toIntegral<UnsignedShort>(us);
+}
+
 decltype(DataElement::value) readValue(std::istream& stream,
                                        ValueRepresentation valueRepresentation,
                                        uint32_t valueLength)
@@ -301,6 +327,8 @@ decltype(DataElement::value) readValue(std::istream& stream,
         return readCodeString(stream, valueLength);
     case ValueRepresentation::DA:
         return readDate(stream, valueLength);
+    case ValueRepresentation::DS:
+        return readDecimalString(stream, valueLength);
     case ValueRepresentation::DT:
         return readDateTime(stream, valueLength);
     case ValueRepresentation::IS:
@@ -321,12 +349,16 @@ decltype(DataElement::value) readValue(std::istream& stream,
         return readTime(stream, valueLength);
     case ValueRepresentation::UI:
         return readUniqueIdentifier(stream, valueLength);
+    case ValueRepresentation::UL:
+        return readUnsignedLong(stream, valueLength);
+    case ValueRepresentation::US:
+        return readUnsignedShort(stream, valueLength);
     case ValueRepresentation::UT:
         return readUnlimitedText(stream, valueLength);
     }
 
     // TODO: implement for other VRs
-    throw std::logic_error("readValue: Not implemented yet");
+    throw std::logic_error("readValue: Not implemented yet for " + vrToString(valueRepresentation));
 }
 
 DataElement readDataElement(std::istream& stream)

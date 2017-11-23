@@ -628,6 +628,82 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile3_ReturnsCorrectDicomFile)
     EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(metaInfo.dataElements(), SourceApplicationEntityTitle).value), Eq(UniqueIdentifier{ "sdc21" }));
 }
 
+TEST(FileTests, readDicomFile_PathToValidDicomFile4_ReturnsCorrectDicomFile)
+{
+    const auto dicomFile = readDicomFile(R"(C:\test\dcm4)");
+
+    const auto& metaInfo = dicomFile.metaInfo();
+    EXPECT_THAT(metaInfo.preamble(), Eq(""));
+    EXPECT_THAT(metaInfo.groupLength(), Eq(static_cast<UnsignedLong>(194)));
+    EXPECT_THAT(metaInfo.version(), Eq(static_cast<OtherByte>(256)));
+    EXPECT_THAT(metaInfo.mediaStorageSopClassUid(), Eq(UniqueIdentifier{ "1.2.840.10008.5.1.4.1.1.2" }));
+    EXPECT_THAT(metaInfo.mediaStorageSopInstanceUid(), Eq(UniqueIdentifier{ "2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251" }));
+    EXPECT_THAT(metaInfo.transferSyntaxUid(), Eq(UniqueIdentifier{ "1.2.840.10008.1.2.1" }));
+    EXPECT_THAT(metaInfo.implementationClassUid(), Eq(UniqueIdentifier{ "2.16.840.1.113662.2.1.1" }));
+    EXPECT_THROW(metaInfo.implementationVersionName(), std::runtime_error);
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(metaInfo.dataElements(), SourceApplicationEntityTitle).value), Eq(UniqueIdentifier{ "PHOENIXSCP" }));
+
+    const auto& dataset = dicomFile.dataset();
+    const auto& datasetElements = dataset.dataElements();
+    EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, SpecificCharacterSet).value), Eq("ISO_IR 100"));
+    EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, ImageType).value), Eq(R"(ORIGINAL\PRIMARY\AXIAL)"));
+    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, InstanceCreationDate).value), Eq("1999.05.05"));
+    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, InstanceCreationTime).value), Eq("10:52:34.530000"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SopClassUid).value), Eq("1.2.840.10008.5.1.4.1.1.2"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SopInstanceUid).value), Eq("2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251"));
+    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, StudyDate).value), Eq("1999.05.05"));
+    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, SeriesDate).value), Eq("1999.05.05"));
+    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, AcquisitionDate).value), Eq("1999.05.05"));
+    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, ContentDate).value), Eq("1999.05.05"));
+    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, StudyTime).value), Eq("10:52:34.530000"));
+    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, SeriesTime).value), Eq("10:52:34.530000"));
+    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, AcquisitionTime).value), Eq("10:52:34.530000"));
+    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, ContentTime).value), Eq("10:52:32.510000"));
+    EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, Modality).value), Eq("CT"));
+    EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, Manufacturer).value), Eq("Picker International, Inc."));
+    EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, InstitutionName).value), Eq("105 HOSPITAL"));
+    EXPECT_THAT(std::get<PersonName>(dataElement(datasetElements, ReferringPhysiciansName).value), Eq("Anonymized"));
+    EXPECT_THAT(std::get<ShortString>(dataElement(datasetElements, StationName).value), Eq("Picker CT"));
+    EXPECT_THAT(std::get<ShortString>(dataElement(datasetElements, StudyDescription).value), Eq(""));
+    EXPECT_THAT(std::get<PersonName>(dataElement(datasetElements, PerformingPhysicianName).value), Eq("Anonymized"));
+    EXPECT_THAT(std::get<PersonName>(dataElement(datasetElements, NameOfPhysiciansReadingStudy).value), Eq("Anonymized"));
+    EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, ManufacturersModelName).value), Eq("PQ5000"));
+    EXPECT_THAT(std::get<PersonName>(dataElement(datasetElements, PatientsName).value), Eq("Anonymized"));
+    EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, ContrastBolusAgent).value), Eq("C-"));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, SliceThickness).value), Eq("10.0"));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, KVP).value), Eq("120"));
+    EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, DeviceSerialNumber).value), Eq("519"));
+    EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, ProtocolName).value), Eq("ADULT BRAIN/U"));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, GantryDetectorTilt).value), Eq(".0"));
+    EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, XRayTubeCurrent).value), Eq("250"));
+    EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, Exposure).value), Eq("526"));
+    EXPECT_THAT(std::get<ShortString>(dataElement(datasetElements, FilterType).value), Eq("0"));
+    EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, PatientPosition).value), Eq("HFS"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, StudyInstanceUid).value), Eq("2.16.840.1.113662.2.1.1519.11582.1990505.1105152"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SeriesInstanceUid).value), Eq("2.16.840.1.113662.2.1.2519.21582.2990505.2105152.2381633.20"));
+    EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, SeriesNumber).value), Eq("3513"));
+    EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, AcquisitionNumber).value), Eq("3513"));
+    EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, InstanceNumber).value), Eq("8"));
+    EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, PatientOrientation).value), Eq(R"(L\P)"));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, ImagePositionPatient).value), Eq(R"(-1.197656e02\-3.997656e02\-2.800000e02)"));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, ImageOrientationPatient).value), Eq(R"(1.000000e00\0.000000e00\0.000000e00\0.000000e00\1.000000e00\0.000000e00)"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, FrameOfReferenceUID).value), Eq("2.16.840.1.113662.2.1.3519.31582.3990505.3105152"));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, SliceLocation).value), Eq("280.00"));
+    EXPECT_THAT(std::get<UnsignedShort>(dataElement(datasetElements, SamplesPerPixel).value), Eq(1));
+    EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, PhotometricInterpretation).value), Eq("MONOCHROME2"));
+    EXPECT_THAT(std::get<UnsignedShort>(dataElement(datasetElements, Rows).value), Eq(512));
+    EXPECT_THAT(std::get<UnsignedShort>(dataElement(datasetElements, Columns).value), Eq(512));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, PixelSpacing).value), Eq(R"(0.46875\0.46875)"));
+    EXPECT_THAT(std::get<UnsignedShort>(dataElement(datasetElements, BitsAllocated).value), Eq(16));
+    EXPECT_THAT(std::get<UnsignedShort>(dataElement(datasetElements, BitsStored).value), Eq(16));
+    EXPECT_THAT(std::get<UnsignedShort>(dataElement(datasetElements, HighBit).value), Eq(15));
+    EXPECT_THAT(std::get<UnsignedShort>(dataElement(datasetElements, PixelRepresentation).value), Eq(1));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, WindowCenter).value), Eq("50"));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, WindowWidth).value), Eq("75"));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, RescaleIntercept).value), Eq("0"));
+    EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, RescaleSlope).value), Eq("1"));
+}
+
 // TODO: add test with DICOM file containing all meta info
 
 }
