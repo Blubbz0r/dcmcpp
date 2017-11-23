@@ -26,7 +26,7 @@ Ret readIntegral(std::istream& stream)
     {
         // TODO: proper exception
         throw std::runtime_error(
-            "Not enough bytes in stream to conver to the requested type (available: " +
+            "Not enough bytes in stream to read the requested type (available: " +
             std::to_string(availableBytes) + "; required: " + std::to_string(Size) + ")");
     }
 
@@ -34,5 +34,7 @@ Ret readIntegral(std::istream& stream)
     stream.read(value, Size);
     return toIntegral<Ret>(value);
 }
+
+std::string readString(std::istream& stream, uint32_t size);
 
 }

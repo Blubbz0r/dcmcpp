@@ -9,6 +9,7 @@ target_sources(
         "${CMAKE_CURRENT_LIST_DIR}/StringUtils.h"
 
     PRIVATE
+        "${CMAKE_CURRENT_LIST_DIR}/LittleEndianStreamReader.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/StreamUtils.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/StringUtils.cpp"
 )

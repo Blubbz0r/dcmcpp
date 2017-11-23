@@ -28,4 +28,18 @@ TEST(LittleEndianStreamReaderTests, readIntegral_StreamWithoutEnoughBytes_Throws
     EXPECT_THROW(readIntegral<uint16_t>(stream), std::runtime_error);
 }
 
+TEST(LittleEndianStreamReaderTests, readString_NoneEmptyStream_ReturnsCorrectString)
+{
+    std::stringstream stream;
+    stream << "TEST";
+    EXPECT_THAT(readString(stream, 4u), Eq("TEST"));
+}
+
+TEST(LittleEndianStreamReaderTests, readString_StreamWithoutEnoughBytes_Throws)
+{
+    std::stringstream stream;
+    stream << 'T';
+    EXPECT_THROW(readString(stream, 4u), std::runtime_error);
+}
+
 }

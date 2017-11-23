@@ -91,10 +91,7 @@ Tag readTag(std::istream& stream)
 ValueRepresentation readValueRepresentation(std::istream& stream)
 {
     static constexpr auto VrSize = 2;
-    char vr[VrSize + 1];
-    vr[VrSize] = '\0';
-    stream.read(vr, VrSize);
-    return vrFromString(vr);
+    return vrFromString(LittleEndian::readString(stream, VrSize));
 }
 
 // TODO: return value does not necessarily match what is needed...
@@ -115,63 +112,47 @@ int readValueLength(std::istream& stream, ValueRepresentation vr)
 
 ApplicationEntity readApplicationEntity(std::istream& stream, uint32_t valueLength)
 {
-    ApplicationEntity aet;
-    aet.resize(valueLength);
-    stream.read(aet.data(), valueLength);
-    StringUtils::trim(aet);
-    return aet;
+    auto ae = LittleEndian::readString(stream, valueLength);
+    StringUtils::trim(ae);
+    return ae;
 }
 
 CodeString readCodeString(std::istream& stream, uint32_t valueLength)
 {
-    CodeString codeString;
-    codeString.resize(valueLength);
-    stream.read(codeString.data(), valueLength);
-    StringUtils::trim(codeString);
-    return codeString;
+    auto cs = LittleEndian::readString(stream, valueLength);
+    StringUtils::trim(cs);
+    return cs;
 }
 
 Date readDate(std::istream& stream, uint32_t valueLength)
 {
-    Date date;
-    date.resize(valueLength);
-    stream.read(date.data(), valueLength);
-    return date;
+    return LittleEndian::readString(stream, valueLength);
 }
 
 DateTime readDateTime(std::istream& stream, uint32_t valueLength)
 {
-    DateTime dateTime;
-    dateTime.resize(valueLength);
-    stream.read(dateTime.data(), valueLength);
-    return dateTime;
+    return LittleEndian::readString(stream, valueLength);
 }
 
 DecimalString readDecimalString(std::istream& stream, uint32_t valueLength)
 {
-    DecimalString ds;
-    ds.resize(valueLength);
-    stream.read(ds.data(), valueLength);
+    auto ds = LittleEndian::readString(stream, valueLength);
     StringUtils::rtrim(ds); // TODO: trim okay?
     return ds;
 }
 
 IntegerString readIntegerString(std::istream& stream, uint32_t valueLength)
 {
-    IntegerString integerString;
-    integerString.resize(valueLength);
-    stream.read(integerString.data(), valueLength);
-    StringUtils::trim(integerString); // TODO: can include leading and trailing spaces according to DICOM but dcmdump and online dump don't include it in their output???
-    return integerString;
+    auto is = LittleEndian::readString(stream, valueLength);
+    StringUtils::trim(is); // TODO: can include leading and trailing spaces according to DICOM but dcmdump and online dump don't include it in their output???
+    return is;
 }
 
 LongString readLongString(std::istream& stream, uint32_t valueLength)
 {
-    LongString longString;
-    longString.resize(valueLength);
-    stream.read(longString.data(), valueLength);
-    StringUtils::trim(longString); // TODO: can include leading and trailing spaces according to DICOM but dcmdump and online dump don't include it in their output???
-    return longString;
+    auto ls = LittleEndian::readString(stream, valueLength);
+    StringUtils::trim(ls); // TODO: can include leading and trailing spaces according to DICOM but dcmdump and online dump don't include it in their output???
+    return ls;
 }
 
 // TODO: should we use value length here? OtherByte has a fixed length?!
@@ -186,36 +167,28 @@ OtherByte readOtherByte(std::istream& stream, uint32_t valueLength)
 
 PersonName readPersonName(std::istream& stream, uint32_t valueLength)
 {
-    PersonName personName;
-    personName.resize(valueLength);
-    stream.read(personName.data(), valueLength);
-    StringUtils::rtrim(personName); // TODO: this fixes the test expectation and matches what dcmdump and online dump are printing, however, trailing spaces are allowed in PersonName and should not be ignored?
-    return personName;
+    auto pn = LittleEndian::readString(stream, valueLength);
+    StringUtils::rtrim(pn); // TODO: this fixes the test expectation and matches what dcmdump and online dump are printing, however, trailing spaces are allowed in PersonName and should not be ignored?
+    return pn;
 }
 
 ShortString readShortString(std::istream& stream, uint32_t valueLength)
 {
-    ShortString sh;
-    sh.resize(valueLength);
-    stream.read(sh.data(), valueLength);
+    auto sh = LittleEndian::readString(stream, valueLength);
     StringUtils::trim(sh);
     return sh;
 }
 
 ShortText readShortText(std::istream& stream, uint32_t valueLength)
 {
-    ShortText st;
-    st.resize(valueLength);
-    stream.read(st.data(), valueLength);
+    auto st = LittleEndian::readString(stream, valueLength);
     StringUtils::trim(st);
     return st;
 }
 
 Time readTime(std::istream& stream, uint32_t valueLength)
 {
-    Time time;
-    time.resize(valueLength);
-    stream.read(time.data(), valueLength);
+    auto time = LittleEndian::readString(stream, valueLength);
     StringUtils::rtrim(time); // TODO: trim correct?
     return time;
 }
@@ -284,9 +257,7 @@ Sequence readSequence(std::istream& stream, uint32_t valueLength)
 
 UnlimitedText readUnlimitedText(std::istream& stream, uint32_t valueLength)
 {
-    UnlimitedText ut;
-    ut.resize(valueLength);
-    stream.read(ut.data(), valueLength);
+    auto ut = LittleEndian::readString(stream, valueLength);
     StringUtils::rtrim(ut);
     return ut;
 }
