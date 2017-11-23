@@ -5,6 +5,7 @@
 #include "ValueRepresentation.h"
 
 #include "Utils/LittleEndian.h"
+#include "Utils/LittleEndianStreamReader.h"
 #include "Utils/StringUtils.h"
 
 #include <fstream>
@@ -74,18 +75,12 @@ bool isDicomFile(const std::experimental::filesystem::path& path)
 
 uint16_t readGroup(std::istream& stream)
 {
-    static constexpr auto GroupSize = 2;
-    char group[GroupSize];
-    stream.read(group, GroupSize);
-    return LittleEndian::toIntegral<uint16_t>(group);
+    return LittleEndian::readIntegral<uint16_t>(stream);
 }
 
 uint16_t readElement(std::istream& stream)
 {
-    static constexpr auto ElementSize = 2;
-    char element[ElementSize];
-    stream.read(element, ElementSize);
-    return LittleEndian::toIntegral<uint16_t>(element);
+    return LittleEndian::readIntegral<uint16_t>(stream);
 }
 
 Tag readTag(std::istream& stream)
@@ -102,6 +97,7 @@ ValueRepresentation readValueRepresentation(std::istream& stream)
     return vrFromString(vr);
 }
 
+// TODO: return value does not necessarily match what is needed...
 int readValueLength(std::istream& stream, ValueRepresentation vr)
 {
     if (hasExtendedLengthEncoding(vr))
@@ -109,17 +105,11 @@ int readValueLength(std::istream& stream, ValueRepresentation vr)
         char reserved[2];
         stream.read(reserved, 2);
 
-        static constexpr auto VlSize = 4;
-        char vl[VlSize];
-        stream.read(vl, VlSize);
-        return LittleEndian::toIntegral<ExtendedValueLength>(vl);
+        return LittleEndian::readIntegral<ExtendedValueLength>(stream);
     }
     else
     {
-        static constexpr auto VlSize = 2;
-        char vl[VlSize];
-        stream.read(vl, VlSize);
-        return LittleEndian::toIntegral<ValueLength>(vl);
+        return LittleEndian::readIntegral<ValueLength>(stream);
     }
 }
 
@@ -184,6 +174,8 @@ LongString readLongString(std::istream& stream, uint32_t valueLength)
     return longString;
 }
 
+// TODO: should we use value length here? OtherByte has a fixed length?!
+// same for UnsignedShort and UnsignedLong
 OtherByte readOtherByte(std::istream& stream, uint32_t valueLength)
 {
     std::string ob;
