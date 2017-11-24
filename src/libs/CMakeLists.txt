@@ -2,27 +2,17 @@ project(dcmcpp)
 
 add_library(${PROJECT_NAME} "")
 
-# TODO: provide via conan
-target_sources(
-    ${PROJECT_NAME}
-
-    PUBLIC
-        gsl/gsl
-        gsl/gsl_algorithm
-        gsl/gsl_assert
-        gsl/gsl_byte
-        gsl/gsl_util
-        gsl/multi_span
-        gsl/pointers
-        gsl/span
-        gsl/string_span
-)
-
 target_include_directories(
     ${PROJECT_NAME}
 
     PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}
+)
+
+target_link_libraries(
+    ${PROJECT_NAME}
+
+    CONAN_PKG::GSL
 )
 
 include(Dicom/CMakeLists.txt)
