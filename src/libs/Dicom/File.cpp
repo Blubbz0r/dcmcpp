@@ -376,9 +376,8 @@ Dataset readDataset(std::istream& stream, const UniqueIdentifier& transferSyntax
     // this ensures that we don't throw exceptions for the other existing tests due to missing VRs, etc.
     if (transferSyntaxUid == "1.2.840.10008.1.2.1")
     {
-        // TODO: properly read until end of file
-        for (int i = 0; i < 36; ++i)
-        //while (!stream.eof())
+        // TODO: stream.eof() should be used here but it contains 1 more byte for dcm2??
+        while (stream.tellg() < StreamUtils::availableBytes(stream))
             datasetElements.emplace_back(readDataElement(stream));
     }
 
