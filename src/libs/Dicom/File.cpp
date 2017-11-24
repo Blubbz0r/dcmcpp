@@ -165,6 +165,11 @@ OtherByte readOtherByte(std::istream& stream, uint32_t valueLength)
     return LittleEndian::toIntegral<OtherByte>(gsl::make_span(ob.data(), valueLength));
 }
 
+OtherWord readOtherWord(std::istream& stream, uint32_t valueLength)
+{
+    return LittleEndian::readString(stream, valueLength);
+}
+
 PersonName readPersonName(std::istream& stream, uint32_t valueLength)
 {
     auto pn = LittleEndian::readString(stream, valueLength);
@@ -300,6 +305,8 @@ decltype(DataElement::value) readValue(std::istream& stream,
         return readLongString(stream, valueLength);
     case ValueRepresentation::OB:
         return readOtherByte(stream, valueLength);
+    case ValueRepresentation::OW:
+        return readOtherWord(stream, valueLength);
     case ValueRepresentation::PN:
         return readPersonName(stream, valueLength);
     case ValueRepresentation::SH:

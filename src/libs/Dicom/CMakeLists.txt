@@ -14,6 +14,7 @@ target_sources(
         "${CMAKE_CURRENT_LIST_DIR}/IntegerString.h"
         "${CMAKE_CURRENT_LIST_DIR}/LongString.h"
         "${CMAKE_CURRENT_LIST_DIR}/OtherByte.h"
+        "${CMAKE_CURRENT_LIST_DIR}/OtherWord.h"
         "${CMAKE_CURRENT_LIST_DIR}/PersonName.h"
         "${CMAKE_CURRENT_LIST_DIR}/Sequence.h"
         "${CMAKE_CURRENT_LIST_DIR}/ShortString.h"

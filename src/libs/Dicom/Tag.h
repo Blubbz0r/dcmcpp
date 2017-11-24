@@ -115,10 +115,10 @@ static constexpr Tag BitsAllocated{ 0x0028, 0x0100 };
 static constexpr Tag BitsStored{ 0x0028, 0x0101 };
 static constexpr Tag HighBit{ 0x0028, 0x0102 };
 static constexpr Tag PixelRepresentation{ 0x0028, 0x0103 };
-static constexpr Tag WindowCenter{ 0x0028, 0x0150 };
-static constexpr Tag WindowWidth{ 0x0028, 0x0151 };
-static constexpr Tag RescaleIntercept{ 0x0028, 0x0152 };
-static constexpr Tag RescaleSlope{ 0x0028, 0x0153 };
+static constexpr Tag WindowCenter{ 0x0028, 0x1050 };
+static constexpr Tag WindowWidth{ 0x0028, 0x1051 };
+static constexpr Tag RescaleIntercept{ 0x0028, 0x1052 };
+static constexpr Tag RescaleSlope{ 0x0028, 0x1053 };
 
 static constexpr Tag RelationshipType{ 0x0040, 0xA010 };
 static constexpr Tag ValueType{ 0x0040, 0xA040 };
@@ -136,6 +136,8 @@ static constexpr Tag PertinentOtherEvidenceSequence{ 0x0040, 0xA385 };
 static constexpr Tag CompletionFlag{ 0x0040, 0xA491 };
 static constexpr Tag VerificationFlag{ 0x0040, 0xA493 };
 static constexpr Tag ContentSequence{ 0x0040, 0xA730 };
+
+static constexpr Tag PixelData{ 0x7FE0, 0x0010 };
 
 static constexpr Tag ItemDelimitationItem{ 0xFFFE, 0xE00D };
 static constexpr Tag SequenceDelimitationItem{ 0xFFFE, 0xE0DD };
