@@ -3,7 +3,7 @@
 namespace dcmcpp::StreamUtils
 {
 
-size_t availableBytes(std::istream& stream)
+std::streamoff availableBytes(std::istream& stream)
 {
     const auto currentPos = stream.tellg();
     stream.seekg(0, std::ios::end);

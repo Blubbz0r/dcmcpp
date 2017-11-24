@@ -10,14 +10,14 @@ namespace dcmcpp::StreamUtils
 TEST(StringUtilsTests, availableBytes_EmptyStream_ReturnsZero)
 {
     std::stringstream stream;
-    EXPECT_THAT(availableBytes(stream), Eq(0u));
+    EXPECT_THAT(availableBytes(stream), Eq(0));
 }
 
 TEST(StringUtilsTests, availableBytes_NoneEmptyStream_ReturnsCorrectResult)
 {
     std::stringstream stream;
     stream << '\x1' << '\x2';
-    EXPECT_THAT(availableBytes(stream), Eq(2u));
+    EXPECT_THAT(availableBytes(stream), Eq(2));
 }
 
 TEST(StringUtilsTests, availableBytes_NoneEmptyStream_DoesNotAlterCurrentStreamPosition)
