@@ -210,7 +210,7 @@ decltype(DataElement::value) readValue(std::istream& stream,
                                        ValueRepresentation valueRepresentation,
                                        uint32_t valueLength);
 
-Sequence readSequence(std::istream& stream, uint32_t valueLength)
+Sequence readSequence(std::istream& stream)
 {
     Sequence sequence;
 
@@ -267,7 +267,8 @@ UnlimitedText readUnlimitedText(std::istream& stream, uint32_t valueLength)
     return ut;
 }
 
-UnsignedLong readUnsignedLong(std::istream& stream, uint32_t valueLength)
+// TODO: or use value length?
+UnsignedLong readUnsignedLong(std::istream& stream, [[maybe_unused]] uint32_t valueLength)
 {
     static constexpr auto UnsignedLongSize = sizeof(UnsignedLong);
     char ul[UnsignedLongSize];
@@ -312,7 +313,7 @@ decltype(DataElement::value) readValue(std::istream& stream,
     case ValueRepresentation::SH:
         return readShortString(stream, valueLength);
     case ValueRepresentation::SQ:
-       return readSequence(stream, valueLength);
+       return readSequence(stream);
     case ValueRepresentation::ST:
         return readShortText(stream, valueLength);
     case ValueRepresentation::TM:
