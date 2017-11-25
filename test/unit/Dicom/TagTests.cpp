@@ -26,4 +26,14 @@ TEST(TagTests, tagToString_ReturnsProperString)
     EXPECT_THAT(tagToString(Tag{ 0x002, 0x0016 }), Eq("(0002,0016)"));
 }
 
+TEST(TagTests, isMetaInfo_TagFromGroup0002_ReturnsTrue)
+{
+    EXPECT_TRUE(isMetaInfo(Tag{ 0x0002, 0x0000 }));
+}
+
+TEST(TagTests, isMetaInfo_TagFromGroupOtherThan0002_ReturnsFalse)
+{
+    EXPECT_FALSE(isMetaInfo(Tag{ 0x0008, 0x0000 }));
+}
+
 }

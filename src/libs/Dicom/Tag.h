@@ -18,6 +18,12 @@ Tag tagFromString(std::string s);
 // TODO: doc
 std::string tagToString(const Tag& tag);
 
+// TODO: doc
+constexpr bool isMetaInfo(const Tag& tag)
+{
+    return tag.group == 0x0002;
+}
+
 // TODO: provide other operators?
 bool operator==(const Tag& lhs, const Tag& rhs);
 bool operator!=(const Tag& lhs, const Tag& rhs);
