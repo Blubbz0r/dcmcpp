@@ -11,7 +11,7 @@ TEST(TagTests, tagFromString_CommaSeparatedTag_ReturnsCorrectTag)
 {
     auto tag = tagFromString("0008,0010");
     EXPECT_THAT(tag.group, Eq(8));
-    EXPECT_THAT(tag.element, Eq(10));
+    EXPECT_THAT(tag.element, Eq(16));
 }
 
 TEST(TagTests, tagFromString_CommaSeparatedTagInBraces_ReturnsCorrectTag)

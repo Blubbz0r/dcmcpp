@@ -15,7 +15,8 @@ Tag tagFromString(std::string s)
 
     try
     {
-        return Tag{ static_cast<uint16_t>(std::stoi(parts[0])), static_cast<uint16_t>(std::stoi(parts[1])) };
+        return Tag{static_cast<uint16_t>(std::stoi(parts[0], 0, 16)),
+                   static_cast<uint16_t>(std::stoi(parts[1], 0, 16))};
     }
     catch (const std::exception& e)
     {
