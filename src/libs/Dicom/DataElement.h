@@ -46,4 +46,7 @@ const DataElement& dataElement(const DataElements& dataElements, const Tag& tag)
 DataElements::const_iterator findDataElementByTag(const DataElements& dataElements,
                                                   const Tag& tag);
 
+// TODO: doc
+std::string dumpDataElements(const DataElements& dataElements, int indentationLevel = 0);
+
 }

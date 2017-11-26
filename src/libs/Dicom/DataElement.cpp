@@ -1,6 +1,7 @@
 #include "DataElement.h"
 
 #include <algorithm>
+#include <sstream>
 
 namespace dcmcpp
 {
@@ -43,6 +44,32 @@ DataElements::const_iterator findDataElementByTag(const DataElements& dataElemen
 {
    return std::find_if(dataElements.cbegin(), dataElements.cend(),
                        [&tag](const DataElement& element) { return element.tag == tag; });
+}
+
+std::string dumpDataElements(const DataElements& dataElements, int indentationLevel)
+{
+    std::stringstream stream;
+    std::string indentation;
+    for (int i = 0; i < indentationLevel; ++i)
+        indentation += "  ";
+
+    for (const auto& dataElement : dataElements)
+    {
+        stream << indentation << tagToString(dataElement.tag) << '\t';
+        stream << indentation << vrToString(dataElement.valueRepresentation) << '\t';
+        // TODO: value length can have different digits possibly requiring multiple \t...
+        stream << indentation << std::to_string(dataElement.valueLength) << '\t';
+        stream << indentation << valueToString(dataElement.value) << "\n";
+
+        if (dataElement.valueRepresentation == ValueRepresentation::SQ)
+        {
+            const auto& sequence = std::get<Sequence>(dataElement.value);
+            for (const auto& sequenceItem : sequence.items)
+                stream << dumpDataElements(sequenceItem.dataElements, indentationLevel + 1);
+        }
+    }
+
+    return stream.str();
 }
 
 }
