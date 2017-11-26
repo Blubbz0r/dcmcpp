@@ -17,7 +17,7 @@ void dumpDataElements(const std::vector<DataElement>& dataElements, int indentat
         std::cout << indentation << vrToString(dataElement.valueRepresentation) << '\t';
         // TODO: value length can have different digits possibly requiring multiple \t...
         std::cout << indentation << std::to_string(dataElement.valueLength) << '\t';
-        std::cout << indentation << valueToString(dataElement.value) << "\t\n";
+        std::cout << indentation << valueToString(dataElement.value) << "\n";
 
         if (dataElement.valueRepresentation == ValueRepresentation::SQ)
         {
