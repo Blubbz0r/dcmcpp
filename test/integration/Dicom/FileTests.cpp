@@ -1,7 +1,8 @@
 #include "Dicom/File.h"
 
-#include <gmock/gmock.h>
 #include "Utils/StringUtils.h"
+
+#include <gmock/gmock.h>
 
 using namespace testing;
 
