@@ -30,9 +30,8 @@ constexpr Ret toIntegral(const char (&s)[N])
     constexpr auto size = sizeof(Ret);
     static_assert(N >= size, "Array not big enough to convert to the requested type");
     Ret ret = 0;
-    for (int i = size - 1; i > 0; --i)
+    for (int i = size - 1; i >= 0; --i)
         ret |= (s[i] & 0xff) << (8 * i);
-    ret |= s[0] & 0xff;
     return ret;
 }
 
@@ -45,9 +44,8 @@ Ret toIntegral(gsl::span<DataType> data)
         throw std::logic_error("Not enough bytes in data to convert to the requested type"); // TODO: proper exception?
 
     Ret ret = 0;
-    for (int i = size - 1; i > 0; --i)
+    for (int i = size - 1; i >= 0; --i)
         ret |= (data[i] & 0xff) << (8 * i);
-    ret |= data[0] & 0xff;
     return ret;
 }
 
