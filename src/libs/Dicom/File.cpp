@@ -102,9 +102,6 @@ int readValueLength(std::istream& stream, ValueRepresentation vr,
 {
     if (hasExtendedLengthEncoding(vr, transferSyntaxUid))
     {
-        char reserved[2];
-        stream.read(reserved, 2);
-
         return LittleEndian::readIntegral<ExtendedValueLength>(stream);
     }
     else
@@ -322,6 +319,33 @@ constexpr bool isDelimitationItem(const Tag& tag)
     return tag == SequenceDelimitationItem || tag == ItemDelimitationItem;
 }
 
+constexpr bool hasReservedVRBytes(ValueRepresentation vr, std::string_view transferSyntaxUid)
+{
+    if (isExplicit(transferSyntaxUid))
+    {
+        // TODO: duplicated in ValueLength::hasExtendedLengthEncoding
+        switch (vr)
+        {
+        case ValueRepresentation::OB:
+        case ValueRepresentation::OD:
+        case ValueRepresentation::OF:
+        case ValueRepresentation::OL:
+        case ValueRepresentation::OW:
+        case ValueRepresentation::SQ:
+        case ValueRepresentation::UC:
+        case ValueRepresentation::UR:
+        case ValueRepresentation::UN:
+        case ValueRepresentation::UT:
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    return false;
+}
+
 DataElement readDataElement(std::istream& stream, std::string_view transferSyntaxUid)
 {
     DataElement element;
@@ -346,6 +370,12 @@ DataElement readDataElement(std::istream& stream, std::string_view transferSynta
             element.valueRepresentation = readValueRepresentation(stream);
         else
             element.valueRepresentation = getVr(element.tag);
+
+        if (hasReservedVRBytes(element.valueRepresentation, transferSyntaxUid))
+        {
+            char reserved[2];
+            stream.read(reserved, 2);
+        }
 
         element.valueLength =
             readValueLength(stream, element.valueRepresentation, transferSyntaxUid);
