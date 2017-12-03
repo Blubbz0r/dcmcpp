@@ -29,6 +29,8 @@ namespace dcmcpp
 
 struct DataElement
 {
+    DataElement();
+
     Tag tag;
     ValueRepresentation valueRepresentation;
     ExtendedValueLength valueLength; // TODO: this could be 16 or 32 bit... we hard-code the bigger type here

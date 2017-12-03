@@ -8,6 +8,10 @@ namespace dcmcpp
 
 template<class T> struct always_false : std::false_type {};
 
+DataElement::DataElement() : valueRepresentation(ValueRepresentation::None), valueLength(0)
+{
+}
+
 std::string valueToString(const DataElement::Value& value)
 {
    return std::visit(
