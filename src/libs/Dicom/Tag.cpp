@@ -29,14 +29,4 @@ std::string tagToString(const Tag& tag)
     return "(" + StringUtils::intToHex(tag.group) + "," + StringUtils::intToHex(tag.element) + ")";
 }
 
-bool operator==(const Tag& lhs, const Tag& rhs)
-{
-    return lhs.group == rhs.group && lhs.element == rhs.element;
-}
-
-bool operator!=(const Tag& lhs, const Tag& rhs)
-{
-    return !(lhs == rhs);
-}
-
 }

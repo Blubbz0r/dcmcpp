@@ -9,37 +9,38 @@ namespace dcmcpp
 /*! DICOM Value Representations (VRs) as defined by PS3.5. */
 enum class ValueRepresentation
 {
-    AE, /*!< Application Entity */
-    AS, /*!< Age String */
-    AT, /*!< Attribute String */
-    CS, /*!< Code String */
-    DA, /*!< Date */
-    DS, /*!< Decimal String */
-    DT, /*!< Date Time */
-    FL, /*!< Floating Point Single */
-    FD, /*!< Floating Point Double */
-    IS, /*!< Integer String */
-    LO, /*!< Long String */
-    LT, /*!< Long Text */
-    OB, /*!< Other Byte */
-    OD, /*!< Other Double */
-    OF, /*!< Other Float */
-    OL, /*!< Other Long */
-    OW, /*!< Other Word */
-    PN, /*!< Person Name */
-    SH, /*!< Short String */
-    SL, /*!< Signed Long */
-    SQ, /*!< Sequence of Items */
-    SS, /*!< Signed Short */
-    ST, /*!< Short Text */
-    TM, /*!< Time */
-    UC, /*!< Unlimited Characters */
-    UI, /*!< Unique Identifier (UID) */
-    UL, /*!< Unsigned Long */
-    UN, /*!< Unknown */
-    UR, /*!< Universal Resource Identifier or Universal Resource Locator (URI/URL) */
-    US, /*!< Unsigned Short */
-    UT  /*!< Unlimited Text */
+    AE,     /*!< Application Entity */
+    AS,     /*!< Age String */
+    AT,     /*!< Attribute String */
+    CS,     /*!< Code String */
+    DA,     /*!< Date */
+    DS,     /*!< Decimal String */
+    DT,     /*!< Date Time */
+    FL,     /*!< Floating Point Single */
+    FD,     /*!< Floating Point Double */
+    IS,     /*!< Integer String */
+    LO,     /*!< Long String */
+    LT,     /*!< Long Text */
+    OB,     /*!< Other Byte */
+    OD,     /*!< Other Double */
+    OF,     /*!< Other Float */
+    OL,     /*!< Other Long */
+    OW,     /*!< Other Word */
+    PN,     /*!< Person Name */
+    SH,     /*!< Short String */
+    SL,     /*!< Signed Long */
+    SQ,     /*!< Sequence of Items */
+    SS,     /*!< Signed Short */
+    ST,     /*!< Short Text */
+    TM,     /*!< Time */
+    UC,     /*!< Unlimited Characters */
+    UI,     /*!< Unique Identifier (UID) */
+    UL,     /*!< Unsigned Long */
+    UN,     /*!< Unknown */
+    UR,     /*!< Universal Resource Identifier or Universal Resource Locator (URI/URL) */
+    US,     /*!< Unsigned Short */
+    UT,     /*!< Unlimited Text */
+    None    /*!< No Value Representation (e.g. Item, ItemDelimitationItem or SequenceDelimitationItem) */
 };
 
 std::string vrToString(ValueRepresentation vr);
@@ -111,26 +112,6 @@ constexpr ValueRepresentation vrFromString(std::string_view vr)
 
     // TODO: is it possible to print the string_view as well?
     throw std::logic_error("Unable to convert to ValueRepresentation"); // TODO: proper exception
-}
-
-constexpr bool hasExtendedLengthEncoding(ValueRepresentation vr)
-{
-    // TODO: this is only true for explicit VR as per PS3.5 chapter 7
-    switch (vr)
-    {
-    case ValueRepresentation::OB:
-    case ValueRepresentation::OD:
-    case ValueRepresentation::OF:
-    case ValueRepresentation::OL:
-    case ValueRepresentation::OW:
-    case ValueRepresentation::SQ:
-    case ValueRepresentation::UN:
-    case ValueRepresentation::UT:
-        return true;
-
-    default:
-        return false;
-    }
 }
 
 }

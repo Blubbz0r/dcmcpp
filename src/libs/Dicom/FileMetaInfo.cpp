@@ -1,4 +1,5 @@
 #include "FileMetaInfo.h"
+#include "Dictionary.h"
 
 #include <algorithm>
 

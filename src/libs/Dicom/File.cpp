@@ -1,7 +1,9 @@
 #include "File.h"
 #include "DataElement.h"
+#include "Dictionary.h"
 #include "OtherByte.h"
 #include "ShortString.h"
+#include "TransferSyntax.h"
 #include "ValueRepresentation.h"
 
 #include "Utils/LittleEndian.h"
@@ -95,9 +97,10 @@ ValueRepresentation readValueRepresentation(std::istream& stream)
 }
 
 // TODO: return value does not necessarily match what is needed...
-int readValueLength(std::istream& stream, ValueRepresentation vr)
+int readValueLength(std::istream& stream, ValueRepresentation vr,
+                    std::string_view transferSyntaxUid)
 {
-    if (hasExtendedLengthEncoding(vr))
+    if (hasExtendedLengthEncoding(vr, transferSyntaxUid))
     {
         char reserved[2];
         stream.read(reserved, 2);
@@ -208,52 +211,34 @@ UniqueIdentifier readUniqueIdentifier(std::istream& stream, uint32_t valueLength
 
 decltype(DataElement::value) readValue(std::istream& stream,
                                        ValueRepresentation valueRepresentation,
-                                       uint32_t valueLength);
+                                       uint32_t valueLength,
+                                       std::string_view transferSyntaxUid);
 
-Sequence readSequence(std::istream& stream)
+DataElement readDataElement(std::istream& stream, std::string_view transferSyntaxUid);
+
+Sequence readSequence(std::istream& stream, std::string_view transferSyntaxUid)
 {
     Sequence sequence;
 
     while (true)
     {
-        static constexpr auto VlSize = 4;
-        char vl[VlSize];
-
-        auto tag = readTag(stream);
-        if (tag == SequenceDelimitationItem)
+        auto element = readDataElement(stream, transferSyntaxUid);
+        if (element.tag == SequenceDelimitationItem)
         {
             // sequences don't necessarily have to contain items but can also be empty and closed by
             // a Sequence Delimitation Item immediately
-            stream.read(vl, VlSize); // TODO: do we need this anywhere?
-
             return sequence;
         }
 
         SequenceItem item;
-        item.tag = std::move(tag);
-
-        stream.read(vl, VlSize);
-        item.valueLength = LittleEndian::toIntegral<uint32_t>(vl);
+        item.tag = element.tag;
+        item.valueLength = element.valueLength;
 
         while (true)
         {
-            tag = readTag(stream);
-            if (tag != ItemDelimitationItem)
-            {
-                DataElement element;
-                element.tag = std::move(tag);
-                element.valueRepresentation = readValueRepresentation(stream);
-                element.valueLength = readValueLength(stream, element.valueRepresentation);
-                element.value = readValue(stream, element.valueRepresentation, element.valueLength);
-
-                item.dataElements.emplace_back(std::move(element));
-            }
-            else
-            {
-                // TODO: do we want to do anything with the value length of Item Delimitation Item?
-                stream.read(vl, VlSize);
+            item.dataElements.emplace_back(readDataElement(stream, transferSyntaxUid));
+            if (item.dataElements.back().tag == ItemDelimitationItem)
                 break;
-            }
         }
 
         sequence.items.emplace_back(std::move(item));
@@ -286,7 +271,7 @@ UnsignedShort readUnsignedShort(std::istream& stream, uint32_t valueLength)
 
 decltype(DataElement::value) readValue(std::istream& stream,
                                        ValueRepresentation valueRepresentation,
-                                       uint32_t valueLength)
+                                       uint32_t valueLength, std::string_view transferSyntaxUid)
 {
     switch (valueRepresentation)
     {
@@ -313,7 +298,7 @@ decltype(DataElement::value) readValue(std::istream& stream,
     case ValueRepresentation::SH:
         return readShortString(stream, valueLength);
     case ValueRepresentation::SQ:
-       return readSequence(stream);
+       return readSequence(stream, transferSyntaxUid);
     case ValueRepresentation::ST:
         return readShortText(stream, valueLength);
     case ValueRepresentation::TM:
@@ -332,13 +317,42 @@ decltype(DataElement::value) readValue(std::istream& stream,
     throw std::logic_error("readValue: Not implemented yet for " + vrToString(valueRepresentation));
 }
 
-DataElement readDataElement(std::istream& stream)
+constexpr bool isDelimitationItem(const Tag& tag)
+{
+    return tag == SequenceDelimitationItem || tag == ItemDelimitationItem;
+}
+
+DataElement readDataElement(std::istream& stream, std::string_view transferSyntaxUid)
 {
     DataElement element;
     element.tag = readTag(stream);
-    element.valueRepresentation = readValueRepresentation(stream);
-    element.valueLength = readValueLength(stream, element.valueRepresentation);
-    element.value = readValue(stream, element.valueRepresentation, element.valueLength);
+
+    if (element.tag.element == 0x0000)
+    {
+        // TODO: not sure if group lengths never have VR?
+        element.valueRepresentation = ValueRepresentation::UL;
+        element.valueLength = LittleEndian::readIntegral<ExtendedValueLength>(stream);
+    }
+    else if (element.tag == Item || isDelimitationItem(element.tag))
+    {
+        element.valueRepresentation = ValueRepresentation::None;
+        element.valueLength = LittleEndian::readIntegral<ExtendedValueLength>(stream);
+        // TODO: these items never have a value?
+        return element;
+    }
+    else
+    {
+        if (isExplicit(transferSyntaxUid))
+            element.valueRepresentation = readValueRepresentation(stream);
+        else
+            element.valueRepresentation = getVr(element.tag);
+
+        element.valueLength =
+            readValueLength(stream, element.valueRepresentation, transferSyntaxUid);
+    }
+
+    element.value =
+        readValue(stream, element.valueRepresentation, element.valueLength, transferSyntaxUid);
     return element;
 }
 
@@ -354,23 +368,14 @@ FileMetaInfo readFileMetaInfo(std::istream& stream)
     std::vector<DataElement> metaInfoDataElements;
 
     // group length
-    DataElement groupLengthElement;
-    groupLengthElement.tag = readTag(stream);
-    groupLengthElement.valueRepresentation = readValueRepresentation(stream);
-    groupLengthElement.valueLength = readValueLength(stream, groupLengthElement.valueRepresentation);
-
-    std::string groupLength;
-    groupLength.resize(groupLengthElement.valueLength);
-    stream.read(groupLength.data(), groupLengthElement.valueLength);
-
-    groupLengthElement.value = LittleEndian::toIntegral<UnsignedLong>(gsl::make_span(groupLength.data(), groupLengthElement.valueLength));
+    auto groupLengthElement = readDataElement(stream, ExplicitVRLittleEndian);
     metaInfoDataElements.emplace_back(std::move(groupLengthElement));
 
     // read data elements until the amount of bytes required by File Meta Information Group Length (groupLength) are reached
     const auto groupLengthOffset = stream.tellg();
     while ((stream.tellg() - groupLengthOffset) < std::get<UnsignedLong>(groupLengthElement.value))
     {
-        metaInfoDataElements.emplace_back(readDataElement(stream));
+        metaInfoDataElements.emplace_back(readDataElement(stream, ExplicitVRLittleEndian));
     }
 
     return FileMetaInfo(std::move(preamble), std::move(metaInfoDataElements));
@@ -380,13 +385,13 @@ Dataset readDataset(std::istream& stream, const UniqueIdentifier& transferSyntax
 {
     std::vector<DataElement> datasetElements;
 
-    // TODO: right now we only want to work on supporting Explicit VR Little Endian
+    // TODO: right now we only want to work on supporting Explicit and Implicit VR Little Endian
     // this ensures that we don't throw exceptions for the other existing tests due to missing VRs, etc.
-    if (transferSyntaxUid == "1.2.840.10008.1.2.1")
+    if (transferSyntaxUid == ExplicitVRLittleEndian || transferSyntaxUid == ImplicitVRLittleEndian)
     {
         // TODO: stream.eof() should be used here but it contains 1 more byte for dcm2??
         while (stream.tellg() < StreamUtils::availableBytes(stream))
-            datasetElements.emplace_back(readDataElement(stream));
+            datasetElements.emplace_back(readDataElement(stream, transferSyntaxUid));
     }
 
     return Dataset{ std::move(datasetElements) };

@@ -9,6 +9,7 @@ target_sources(
         "${CMAKE_CURRENT_LIST_DIR}/Date.h"
         "${CMAKE_CURRENT_LIST_DIR}/DateTime.h"
         "${CMAKE_CURRENT_LIST_DIR}/DecimalString.h"
+        "${CMAKE_CURRENT_LIST_DIR}/Dictionary.h"
         "${CMAKE_CURRENT_LIST_DIR}/File.h"
         "${CMAKE_CURRENT_LIST_DIR}/FileMetaInfo.h"
         "${CMAKE_CURRENT_LIST_DIR}/IntegerString.h"
@@ -21,6 +22,7 @@ target_sources(
         "${CMAKE_CURRENT_LIST_DIR}/ShortText.h"
         "${CMAKE_CURRENT_LIST_DIR}/Tag.h"
         "${CMAKE_CURRENT_LIST_DIR}/Time.h"
+        "${CMAKE_CURRENT_LIST_DIR}/TransferSyntax.h"
         "${CMAKE_CURRENT_LIST_DIR}/UniqueIdentifier.h"
         "${CMAKE_CURRENT_LIST_DIR}/UnlimitedText.h"
         "${CMAKE_CURRENT_LIST_DIR}/UnsignedShort.h"
@@ -35,5 +37,6 @@ target_sources(
         "${CMAKE_CURRENT_LIST_DIR}/FileMetaInfo.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/Tag.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/UniqueIdentifier.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/ValueLength.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/ValueRepresentation.cpp"
 )

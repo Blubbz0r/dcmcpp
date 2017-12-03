@@ -1,4 +1,5 @@
 #include "Dicom/File.h"
+#include "Dicom/Dictionary.h"
 
 #include "Utils/StringUtils.h"
 
@@ -9,6 +10,7 @@ using namespace testing;
 namespace dcmcpp
 {
 
+// TODO: replace hard-coded file paths
 TEST(FileTests, isDicomFile_PathToValidDicomFile_ReturnsTrue)
 {
     EXPECT_TRUE(isDicomFile(R"(C:\test\dcm)"));
@@ -47,6 +49,10 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile_ReturnsCorrectDicomFile)
     EXPECT_THAT(metaInfo.transferSyntaxUid(), Eq(UniqueIdentifier{ "1.2.840.10008.1.2" }));
     EXPECT_THAT(metaInfo.implementationClassUid(), Eq(UniqueIdentifier{ "1.2.276.0.7230010.3.0.3.5.3" }));
     EXPECT_THAT(metaInfo.implementationVersionName(), Eq(UniqueIdentifier{ "OFFIS_DCMTK_353" }));
+
+    const auto& dataset = dicomFile.dataset();
+    const auto& datasetElements = dataset.dataElements();
+    EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, SpecificCharacterSet).value), Eq("ISO_IR 100"));
 }
 
 TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
@@ -87,11 +93,12 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
         ASSERT_THAT(sequence.items.size(), Eq(1u));
 
         const auto& firstSequenceItem = sequence.items[0];
-        EXPECT_THAT(firstSequenceItem.dataElements.size(), Eq(4u));
+        EXPECT_THAT(firstSequenceItem.dataElements.size(), Eq(5u));
         EXPECT_THAT(std::get<ShortString>(dataElement(firstSequenceItem.dataElements, CodingSchemeDesignator).value), Eq("99_OFFIS_DCMTK"));
         EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, CodingSchemeUid).value), Eq("1.2.276.0.7230010.3.0.0.1"));
         EXPECT_THAT(std::get<ShortText>(dataElement(firstSequenceItem.dataElements, CodingSchemeName).value), Eq("OFFIS DCMTK Coding Scheme"));
         EXPECT_THAT(std::get<ShortText>(dataElement(firstSequenceItem.dataElements, CodingSchemeResponsibleOrganization).value), Eq("Kuratorium OFFIS e.V., Escherweg 2, 26121 Oldenburg, Germany"));
+        EXPECT_THAT(firstSequenceItem.dataElements.back().tag, Eq(ItemDelimitationItem));
     }
 
     EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, StudyDescription).value), Eq("OFFIS Structured Reporting Templates"));
@@ -124,10 +131,11 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
         ASSERT_THAT(sequence.items.size(), Eq(1u));
 
         const auto& firstSequenceItem = sequence.items[0];
-        EXPECT_THAT(firstSequenceItem.dataElements.size(), Eq(3u));
+        EXPECT_THAT(firstSequenceItem.dataElements.size(), Eq(4u));
         EXPECT_THAT(std::get<ShortString>(dataElement(firstSequenceItem.dataElements, CodeValue).value), Eq("CH_0.1"));
         EXPECT_THAT(std::get<ShortString>(dataElement(firstSequenceItem.dataElements, CodingSchemeDesignator).value), Eq("99_OFFIS_DCMTK"));
         EXPECT_THAT(std::get<LongString>(dataElement(firstSequenceItem.dataElements, CodeMeaning).value), Eq("De bello Gallico"));
+        EXPECT_THAT(firstSequenceItem.dataElements.back().tag, Eq(ItemDelimitationItem));
     }
 
     EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, ContinuityOfContent).value), Eq("SEPARATE"));
@@ -140,7 +148,7 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
         ASSERT_THAT(sequence.items.size(), Eq(1u));
 
         const auto& firstSequenceItem = sequence.items[0];
-        EXPECT_THAT(firstSequenceItem.dataElements.size(), Eq(4u));
+        EXPECT_THAT(firstSequenceItem.dataElements.size(), Eq(5u));
         EXPECT_THAT(std::get<LongString>(dataElement(firstSequenceItem.dataElements, VerifyingOrganization).value), Eq("SPQR"));
         EXPECT_THAT(std::get<DateTime>(dataElement(firstSequenceItem.dataElements, VerificationDateTime).value), Eq("20050530160527"));
         EXPECT_THAT(std::get<PersonName>(dataElement(firstSequenceItem.dataElements, VerifyingObserverName).value), Eq("Augustus Caesar^Gaius Iulius Octavianus"));
@@ -154,6 +162,8 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
 
             EXPECT_THAT(sequence.items.size(), Eq(0u));
         }
+
+        EXPECT_THAT(firstSequenceItem.dataElements.back().tag, Eq(ItemDelimitationItem));
     }
 
     {
