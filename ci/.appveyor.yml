@@ -1,0 +1,43 @@
+os:
+  - Visual Studio 2017
+
+platform:
+      - x64
+
+build:
+  verbosity: detailed
+
+configuration:
+  - Debug
+
+install:
+  # All external dependencies are installed in C:\projects\deps
+  - mkdir C:\projects\deps
+  - cd C:\projects\deps
+
+  # Install conan
+  - echo "Downloading conan..."
+  - set PATH=%PATH%;%PYTHON%/Scripts/
+  - pip.exe install conan
+  - conan user # Create the conan data directory
+  - conan --version
+  - conan remote add conan-center-blubb https://api.bintray.com/conan/blubb/blubb
+
+  # Install a recent CMake
+  - set CMAKE_URL="https://cmake.org/files/v3.8/cmake-3.8.0-win64-x64.zip"
+  - appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
+  - 7z x cmake.zip -oC:\projects\deps > nul
+  - move C:\projects\deps\cmake-* C:\projects\deps\cmake # Move to a version-agnostic directory
+  - set PATH=C:\projects\deps\cmake\bin;%PATH%
+  - cmake --version
+
+before_build:
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
+  - cd C:\projects\dcmcpp
+
+build_script:
+  - mkdir build
+  - cd build
+  - conan install .. --build=missing -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Debug -s arch=x86_64 -s os=Windows
+  - cmake .. -G "Visual Studio 15 2017 Win64"
+  - cmake --build . --target Debug
