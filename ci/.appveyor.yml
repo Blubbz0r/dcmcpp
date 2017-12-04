@@ -40,4 +40,4 @@ build_script:
   - cd build
   - conan install .. --build=missing -s compiler="Visual Studio" -s compiler.version=15 -s build_type=Debug -s arch=x86_64 -s os=Windows
   - cmake .. -G "Visual Studio 15 2017 Win64"
-  - cmake --build . --target Debug
+  - cmake --build . --config Debug
