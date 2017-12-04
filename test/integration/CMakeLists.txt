@@ -7,7 +7,7 @@ target_link_libraries(
 
     dcmcpp
 
-    CONAN_PKG::googlemock
+    CONAN_PKG::googletest
 )
 
 include(Dicom/CMakeLists.txt)
