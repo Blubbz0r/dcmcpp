@@ -40,3 +40,5 @@ target_sources(
         "${CMAKE_CURRENT_LIST_DIR}/ValueLength.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/ValueRepresentation.cpp"
 )
+
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR} DESTINATION include FILES_MATCHING PATTERN "*.h")

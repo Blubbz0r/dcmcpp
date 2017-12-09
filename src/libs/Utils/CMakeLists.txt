@@ -13,3 +13,5 @@ target_sources(
         "${CMAKE_CURRENT_LIST_DIR}/StreamUtils.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/StringUtils.cpp"
 )
+
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR} DESTINATION include FILES_MATCHING PATTERN "*.h")

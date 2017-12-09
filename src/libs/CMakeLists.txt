@@ -18,4 +18,6 @@ target_link_libraries(
 include(Dicom/CMakeLists.txt)
 include(Utils/CMakeLists.txt)
 
-set_property(TARGET ${PROJECT_NAME} PROPERTY FOLDER "libs")
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "libs")
