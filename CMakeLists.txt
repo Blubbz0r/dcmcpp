@@ -12,6 +12,9 @@ else()
     message(FATAL_ERROR "Please run conan install first (conanbuildfileinfo.cmake needs to be found here '${CONAN_BUILD_INFO_PATH}')")
 endif()
 
+option(WITH_APPS "Whether or not to include the apps" ON)
+option(WITH_TESTS "Whether or not to include the test and benchmark projects" ON)
+
 # Turn on using solution folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -37,4 +40,7 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 add_subdirectory(src)
-add_subdirectory(test)
+
+if (WITH_TESTS)
+  add_subdirectory(test)
+endif()
