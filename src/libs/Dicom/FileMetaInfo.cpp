@@ -11,8 +11,8 @@ FileMetaInfo::FileMetaInfo(std::vector<DataElement> dataElements)
 {
 }
 
-FileMetaInfo::FileMetaInfo(std::string ppreamble, std::vector<DataElement> dataElements)
-    : m_preamble(std::move(m_preamble)), m_dataElements(std::move(dataElements))
+FileMetaInfo::FileMetaInfo(std::string preamble, std::vector<DataElement> dataElements)
+    : m_preamble(std::move(preamble)), m_dataElements(std::move(dataElements))
 {
 }
 

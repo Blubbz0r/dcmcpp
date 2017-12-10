@@ -19,7 +19,7 @@ class FileMetaInfo
 {
 public:
     explicit FileMetaInfo(DataElements dataElements);
-    FileMetaInfo(std::string ppreamble, DataElements dataElements);
+    FileMetaInfo(std::string preamble, DataElements dataElements);
 
     // TODO: add notes from DICOM standard to documentation?
 
