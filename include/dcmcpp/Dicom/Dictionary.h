@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Tag.h"
-#include "UniqueIdentifier.h"
-#include "ValueRepresentation.h"
+#include "dcmcpp/Dicom/Tag.h"
+#include "dcmcpp/Dicom/UniqueIdentifier.h"
+#include "dcmcpp/Dicom/ValueRepresentation.h"
 
 namespace dcmcpp
 {
@@ -134,6 +134,10 @@ static constexpr auto ExplicitVRLittleEndian = "1.2.840.10008.1.2.1";
 constexpr ValueRepresentation getVr(const Tag& tag)
 {
     if (tag == SpecificCharacterSet)
+        return ValueRepresentation::CS;
+    else if (tag == ImageType)
+        return ValueRepresentation::CS;
+    else if (tag == SopClassUid)
         return ValueRepresentation::CS;
 
     // TODO: implement for the rest

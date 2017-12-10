@@ -27,6 +27,12 @@ constexpr bool isMetaInfo(const Tag& tag)
     return tag.group == 0x0002;
 }
 
+// TODO: doc
+constexpr bool isGroupLength(const Tag& tag)
+{
+    return tag.element == 0x0000;
+}
+
 // TODO: provide other operators?
 constexpr bool operator==(const Tag& lhs, const Tag& rhs)
 {

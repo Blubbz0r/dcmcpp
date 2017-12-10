@@ -1,4 +1,4 @@
-#include "DataElement.h"
+#include "dcmcpp/Dicom/DataElement.h"
 
 #include <algorithm>
 #include <sstream>

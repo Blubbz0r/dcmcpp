@@ -1,7 +1,7 @@
-#include "Dicom/File.h"
-#include "Dicom/Dictionary.h"
+#include "dcmcpp/Dicom/File.h"
+#include "dcmcpp/Dicom/Dictionary.h"
 
-#include "Utils/StringUtils.h"
+#include "dcmcpp/Utils/StringUtils.h"
 
 #include <gmock/gmock.h>
 
@@ -53,6 +53,7 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile_ReturnsCorrectDicomFile)
     const auto& dataset = dicomFile.dataset();
     const auto& datasetElements = dataset.dataElements();
     EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, SpecificCharacterSet).value), Eq("ISO_IR 100"));
+    EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, ImageType).value), Eq(R"(ORIGINAL\PRIMARY\AXIAL)"));
 }
 
 TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)

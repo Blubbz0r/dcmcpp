@@ -1,6 +1,6 @@
-#include "Tag.h"
+#include "dcmcpp/Dicom/Tag.h"
 
-#include "Utils/StringUtils.h"
+#include "dcmcpp/Utils/StringUtils.h"
 
 #include <algorithm>
 

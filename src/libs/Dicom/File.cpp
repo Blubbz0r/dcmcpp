@@ -1,14 +1,14 @@
-#include "File.h"
-#include "DataElement.h"
-#include "Dictionary.h"
-#include "OtherByte.h"
-#include "ShortString.h"
-#include "TransferSyntax.h"
-#include "ValueRepresentation.h"
+#include "dcmcpp/Dicom/File.h"
+#include "dcmcpp/Dicom/DataElement.h"
+#include "dcmcpp/Dicom/Dictionary.h"
+#include "dcmcpp/Dicom/OtherByte.h"
+#include "dcmcpp/Dicom/ShortString.h"
+#include "dcmcpp/Dicom/TransferSyntax.h"
+#include "dcmcpp/Dicom/ValueRepresentation.h"
 
-#include "Utils/LittleEndian.h"
-#include "Utils/LittleEndianStreamReader.h"
-#include "Utils/StringUtils.h"
+#include "dcmcpp/Utils/LittleEndian.h"
+#include "dcmcpp/Utils/LittleEndianStreamReader.h"
+#include "dcmcpp/Utils/StringUtils.h"
 
 #include <fstream>
 
@@ -351,7 +351,7 @@ DataElement readDataElement(std::istream& stream, std::string_view transferSynta
     DataElement element;
     element.tag = readTag(stream);
 
-    if (element.tag.element == 0x0000)
+    if (isGroupLength(element.tag))
     {
         // TODO: not sure if group lengths never have VR?
         element.valueRepresentation = ValueRepresentation::UL;

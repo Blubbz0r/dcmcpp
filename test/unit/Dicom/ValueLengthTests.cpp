@@ -1,6 +1,6 @@
-#include "Dicom/ValueLength.h"
-#include "Dicom/Dictionary.h"
-#include "Dicom/ValueRepresentation.h"
+#include "dcmcpp/Dicom/ValueLength.h"
+#include "dcmcpp/Dicom/Dictionary.h"
+#include "dcmcpp/Dicom/ValueRepresentation.h"
 
 #include <gmock/gmock.h>
 

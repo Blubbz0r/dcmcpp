@@ -39,8 +39,11 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -Werror")
 endif()
 
+set(INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
 add_subdirectory(src)
 
 if (WITH_TESTS)
   add_subdirectory(test)
 endif()
+
+install(DIRECTORY ${INCLUDE_DIR} DESTINATION .)

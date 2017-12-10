@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DataElement.h"
+#include "dcmcpp/Dicom/DataElement.h"
 
 namespace dcmcpp
 {

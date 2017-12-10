@@ -1,4 +1,4 @@
-#include "LittleEndianStreamReader.h"
+#include "dcmcpp/Utils/LittleEndianStreamReader.h"
 
 namespace dcmcpp::LittleEndian
 {

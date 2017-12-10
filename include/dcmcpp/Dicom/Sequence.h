@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tag.h"
+#include "dcmcpp/Dicom/Tag.h"
 
 #include <vector>
 

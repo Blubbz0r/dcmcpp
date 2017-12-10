@@ -1,4 +1,4 @@
-#include "Dicom/UniqueIdentifier.h"
+#include "dcmcpp/Dicom/UniqueIdentifier.h"
 
 #include <gmock/gmock.h>
 

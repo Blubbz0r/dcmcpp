@@ -6,7 +6,7 @@ target_include_directories(
     ${PROJECT_NAME}
 
     PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR}
+        ${INCLUDE_DIR}
 )
 
 target_link_libraries(
@@ -15,8 +15,8 @@ target_link_libraries(
     CONAN_PKG::GSL
 )
 
-include(Dicom/CMakeLists.txt)
-include(Utils/CMakeLists.txt)
+include(${CMAKE_CURRENT_LIST_DIR}/Dicom/CMakeLists.txt)
+include(${CMAKE_CURRENT_LIST_DIR}/Utils/CMakeLists.txt)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 

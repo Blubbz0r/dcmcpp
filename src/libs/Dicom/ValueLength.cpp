@@ -1,6 +1,6 @@
-#include "ValueLength.h"
-#include "ValueRepresentation.h"
-#include "TransferSyntax.h"
+#include "dcmcpp/Dicom/ValueLength.h"
+#include "dcmcpp/Dicom/ValueRepresentation.h"
+#include "dcmcpp/Dicom/TransferSyntax.h"
 
 namespace dcmcpp
 {

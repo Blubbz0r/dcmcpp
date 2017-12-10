@@ -10,6 +10,6 @@ target_link_libraries(
     CONAN_PKG::googletest
 )
 
-include(Dicom/CMakeLists.txt)
+include(${CMAKE_CURRENT_LIST_DIR}/Dicom/CMakeLists.txt)
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY FOLDER "tests")

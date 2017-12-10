@@ -1,6 +1,6 @@
-#include "UniqueIdentifier.h"
+#include "dcmcpp/Dicom/UniqueIdentifier.h"
 
-#include "Utils/StringUtils.h"
+#include "dcmcpp/Utils/StringUtils.h"
 
 namespace dcmcpp
 {

@@ -1,4 +1,4 @@
-#include "ValueRepresentation.h"
+#include "dcmcpp/Dicom/ValueRepresentation.h"
 
 namespace dcmcpp
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Dataset.h"
-#include "FileMetaInfo.h"
+#include "dcmcpp/Dicom/Dataset.h"
+#include "dcmcpp/Dicom/FileMetaInfo.h"
 
 #include <filesystem>
 

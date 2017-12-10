@@ -1,4 +1,4 @@
-#include "StringUtils.h"
+#include "dcmcpp/Utils/StringUtils.h"
 
 #include <algorithm>
 #include <cctype>

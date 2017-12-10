@@ -1,9 +1,9 @@
 #pragma once
 
-#include "DataElement.h"
-#include "OtherByte.h"
-#include "UniqueIdentifier.h"
-#include "UnsignedLong.h"
+#include "dcmcpp/Dicom/DataElement.h"
+#include "dcmcpp/Dicom/OtherByte.h"
+#include "dcmcpp/Dicom/UniqueIdentifier.h"
+#include "dcmcpp/Dicom/UnsignedLong.h"
 
 namespace dcmcpp
 {

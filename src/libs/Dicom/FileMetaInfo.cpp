@@ -1,5 +1,5 @@
-#include "FileMetaInfo.h"
-#include "Dictionary.h"
+#include "dcmcpp/Dicom/FileMetaInfo.h"
+#include "dcmcpp/Dicom/Dictionary.h"
 
 #include <algorithm>
 

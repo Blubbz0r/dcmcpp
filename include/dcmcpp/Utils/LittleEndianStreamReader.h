@@ -1,7 +1,7 @@
 #pragma once
 
-#include "LittleEndian.h"
-#include "StreamUtils.h"
+#include "dcmcpp/Utils/LittleEndian.h"
+#include "dcmcpp/Utils/StreamUtils.h"
 
 #include <istream>
 #include <string>

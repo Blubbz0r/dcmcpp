@@ -1,4 +1,4 @@
-#include "Utils/LittleEndianStreamReader.h"
+#include "dcmcpp/Utils/LittleEndianStreamReader.h"
 
 #include <gmock/gmock.h>
 

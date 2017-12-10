@@ -1,4 +1,4 @@
-#include "StreamUtils.h"
+#include "dcmcpp/Utils/StreamUtils.h"
 
 namespace dcmcpp::StreamUtils
 {
