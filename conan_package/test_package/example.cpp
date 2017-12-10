@@ -1,5 +1,5 @@
-#include <Dicom/Dictionary.h>
-#include <Dicom/Tag.h>
+#include <dcmcpp/Dicom/Dictionary.h>
+#include <dcmcpp/Dicom/Tag.h>
 
 #include <iostream>
 

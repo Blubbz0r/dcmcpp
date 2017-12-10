@@ -7,7 +7,7 @@ class DcmcppConan(ConanFile):
     options = { "with_apps" : [True, False] }
     default_options = "with_apps=False"
     generators = "cmake"
-    exports_sources = "../CMakeLists.txt", "../conanfile.py", "../src*"
+    exports_sources = "../CMakeLists.txt", "../conanfile.py", "../include*", "../src*"
     no_copy_source = True
     install_dir = ""
 
