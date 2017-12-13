@@ -388,9 +388,8 @@ DataElement readDataElement(std::istream& stream, std::string_view transferSynta
 
 FileMetaInfo readFileMetaInfo(std::istream& stream)
 {
-    std::string preamble;
-    preamble.resize(PreambleSize);
-    stream.read(preamble.data(), PreambleSize);
+    char preamble[PreambleSize];
+    stream.read(preamble, PreambleSize);
 
     std::string magic;
     stream.read(magic.data(), MagicStringSize);
@@ -408,7 +407,7 @@ FileMetaInfo readFileMetaInfo(std::istream& stream)
         metaInfoDataElements.emplace_back(readDataElement(stream, ExplicitVRLittleEndian));
     }
 
-    return FileMetaInfo(std::move(preamble), std::move(metaInfoDataElements));
+    return FileMetaInfo(preamble, std::move(metaInfoDataElements));
 }
 
 Dataset readDataset(std::istream& stream, const UniqueIdentifier& transferSyntaxUid)
