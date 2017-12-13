@@ -4,3 +4,6 @@ target_sources(
     PRIVATE
         "${CMAKE_CURRENT_LIST_DIR}/File_BM.cpp"
 )
+
+include(CreateSubfolders)
+CreateSubfolders("Dicom")

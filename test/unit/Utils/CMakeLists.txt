@@ -7,3 +7,6 @@ target_sources(
         "${CMAKE_CURRENT_LIST_DIR}/StreamUtilsTests.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/StringUtilsTests.cpp"
 )
+
+include(CreateSubfolders)
+CreateSubfolders("Utils")

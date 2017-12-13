@@ -15,6 +15,8 @@ endif()
 option(WITH_APPS "Whether or not to include the apps" ON)
 option(WITH_TESTS "Whether or not to include the test and benchmark projects" ON)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 # Turn on using solution folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 

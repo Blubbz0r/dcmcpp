@@ -10,3 +10,6 @@ target_sources(
         "${UTILS_INCLUDE_DIR}/StreamUtils.h" "${CMAKE_CURRENT_LIST_DIR}/StreamUtils.cpp"
         "${UTILS_INCLUDE_DIR}/StringUtils.h" "${CMAKE_CURRENT_LIST_DIR}/StringUtils.cpp"
 )
+
+include(CreateSubfolders)
+CreateSubfolders("Utils")

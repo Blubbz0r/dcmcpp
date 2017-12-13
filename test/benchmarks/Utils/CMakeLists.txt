@@ -4,3 +4,6 @@ target_sources(
     PRIVATE
         "${CMAKE_CURRENT_LIST_DIR}/StringUtils_BM.cpp"
 )
+
+include(CreateSubfolders)
+CreateSubfolders("Utils")

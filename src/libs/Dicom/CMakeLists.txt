@@ -32,3 +32,6 @@ target_sources(
         "${DICOM_INCLUDE_DIR}/ValueLength.h" "${CMAKE_CURRENT_LIST_DIR}/ValueLength.cpp"
         "${DICOM_INCLUDE_DIR}/ValueRepresentation.h" "${CMAKE_CURRENT_LIST_DIR}/ValueRepresentation.cpp"
 )
+
+include(CreateSubfolders)
+CreateSubfolders("Dicom")
