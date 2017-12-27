@@ -44,4 +44,14 @@ constexpr bool operator!=(const Tag& lhs, const Tag& rhs)
     return !(lhs == rhs);
 }
 
+constexpr bool operator<(const Tag& lhs, const Tag& rhs)
+{
+    if (lhs.group < rhs.group)
+        return true;
+    else if (lhs.group > rhs.group)
+        return false;
+    else
+        return lhs.element < rhs.element;
+}
+
 }

@@ -11,7 +11,7 @@ target_sources(
         "${DICOM_INCLUDE_DIR}/Date.h"
         "${DICOM_INCLUDE_DIR}/DateTime.h"
         "${DICOM_INCLUDE_DIR}/DecimalString.h"
-        "${DICOM_INCLUDE_DIR}/Dictionary.h"
+        "${DICOM_INCLUDE_DIR}/Dictionary.h" "${CMAKE_CURRENT_LIST_DIR}/Dictionary.cpp"
         "${DICOM_INCLUDE_DIR}/File.h" "${CMAKE_CURRENT_LIST_DIR}/File.cpp"
         "${DICOM_INCLUDE_DIR}/FileMetaInfo.h" "${CMAKE_CURRENT_LIST_DIR}/FileMetaInfo.cpp"
         "${DICOM_INCLUDE_DIR}/IntegerString.h"

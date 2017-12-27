@@ -23,7 +23,7 @@ std::string FileMetaInfo::preamble() const
 
 UnsignedLong FileMetaInfo::groupLength() const
 {
-    const auto it = findDataElementByTag(m_dataElements, FileMetaInformationGroupLength);
+    const auto it = findDataElementByTag(m_dataElements, dict::FileMetaInformationGroupLength);
     if (it != m_dataElements.cend())
         return std::get<UnsignedLong>(it->value);
     else
@@ -32,7 +32,7 @@ UnsignedLong FileMetaInfo::groupLength() const
 
 OtherByte FileMetaInfo::version() const
 {
-    const auto it = findDataElementByTag(m_dataElements, FileMetaInformationVersion);
+    const auto it = findDataElementByTag(m_dataElements, dict::FileMetaInformationVersion);
     if (it != m_dataElements.cend())
         return std::get<OtherByte>(it->value);
     else
@@ -41,7 +41,7 @@ OtherByte FileMetaInfo::version() const
 
 UniqueIdentifier FileMetaInfo::mediaStorageSopClassUid() const
 {
-    const auto it = findDataElementByTag(m_dataElements, MediaStorageSopClassUid);
+    const auto it = findDataElementByTag(m_dataElements, dict::MediaStorageSOPClassUID);
     if (it != m_dataElements.cend())
         return std::get<UniqueIdentifier>(it->value);
     else
@@ -50,7 +50,7 @@ UniqueIdentifier FileMetaInfo::mediaStorageSopClassUid() const
 
 UniqueIdentifier FileMetaInfo::mediaStorageSopInstanceUid() const
 {
-    const auto it = findDataElementByTag(m_dataElements, MediaStorageSopInstanceUid);
+    const auto it = findDataElementByTag(m_dataElements, dict::MediaStorageSOPInstanceUID);
     if (it != m_dataElements.cend())
         return std::get<UniqueIdentifier>(it->value);
     else
@@ -59,7 +59,7 @@ UniqueIdentifier FileMetaInfo::mediaStorageSopInstanceUid() const
 
 UniqueIdentifier FileMetaInfo::transferSyntaxUid() const
 {
-    const auto it = findDataElementByTag(m_dataElements, TransferSyntaxUid);
+    const auto it = findDataElementByTag(m_dataElements, dict::TransferSyntaxUID);
     if (it != m_dataElements.cend())
         return std::get<UniqueIdentifier>(it->value);
     else
@@ -68,7 +68,7 @@ UniqueIdentifier FileMetaInfo::transferSyntaxUid() const
 
 UniqueIdentifier FileMetaInfo::implementationClassUid() const
 {
-    const auto it = findDataElementByTag(m_dataElements, ImplementationClassUid);
+    const auto it = findDataElementByTag(m_dataElements, dict::ImplementationClassUID);
     if (it != m_dataElements.cend())
         return std::get<UniqueIdentifier>(it->value);
     else
@@ -77,7 +77,7 @@ UniqueIdentifier FileMetaInfo::implementationClassUid() const
 
 std::string FileMetaInfo::implementationVersionName() const
 {
-    const auto it = findDataElementByTag(m_dataElements, ImplementationVersionName);
+    const auto it = findDataElementByTag(m_dataElements, dict::ImplementationVersionName);
     if (it != m_dataElements.cend())
         return std::get<UniqueIdentifier>(it->value);
     else

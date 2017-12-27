@@ -220,7 +220,7 @@ Sequence readSequence(std::istream& stream, std::string_view transferSyntaxUid)
     while (true)
     {
         auto element = readDataElement(stream, transferSyntaxUid);
-        if (element.tag == SequenceDelimitationItem)
+        if (element.tag == dict::SequenceDelimitationItem)
         {
             // sequences don't necessarily have to contain items but can also be empty and closed by
             // a Sequence Delimitation Item immediately
@@ -234,7 +234,7 @@ Sequence readSequence(std::istream& stream, std::string_view transferSyntaxUid)
         while (true)
         {
             item.dataElements.emplace_back(readDataElement(stream, transferSyntaxUid));
-            if (item.dataElements.back().tag == ItemDelimitationItem)
+            if (item.dataElements.back().tag == dict::ItemDelimitationItem)
                 break;
         }
 
@@ -316,7 +316,7 @@ decltype(DataElement::value) readValue(std::istream& stream,
 
 constexpr bool isDelimitationItem(const Tag& tag)
 {
-    return tag == SequenceDelimitationItem || tag == ItemDelimitationItem;
+    return tag == dict::SequenceDelimitationItem || tag == dict::ItemDelimitationItem;
 }
 
 constexpr bool hasReservedVRBytes(ValueRepresentation vr, std::string_view transferSyntaxUid)
@@ -357,7 +357,7 @@ DataElement readDataElement(std::istream& stream, std::string_view transferSynta
         element.valueRepresentation = ValueRepresentation::UL;
         element.valueLength = LittleEndian::readIntegral<ExtendedValueLength>(stream);
     }
-    else if (element.tag == Item || isDelimitationItem(element.tag))
+    else if (element.tag == dict::Item || isDelimitationItem(element.tag))
     {
         element.valueRepresentation = ValueRepresentation::None;
         element.valueLength = LittleEndian::readIntegral<ExtendedValueLength>(stream);
@@ -369,7 +369,7 @@ DataElement readDataElement(std::istream& stream, std::string_view transferSynta
         if (isExplicit(transferSyntaxUid))
             element.valueRepresentation = readValueRepresentation(stream);
         else
-            element.valueRepresentation = getVr(element.tag);
+            element.valueRepresentation = dict::getVr(element.tag);
 
         if (hasReservedVRBytes(element.valueRepresentation, transferSyntaxUid))
         {
@@ -397,14 +397,14 @@ FileMetaInfo readFileMetaInfo(std::istream& stream)
     std::vector<DataElement> metaInfoDataElements;
 
     // group length
-    auto groupLengthElement = readDataElement(stream, ExplicitVRLittleEndian);
+    auto groupLengthElement = readDataElement(stream, dict::ExplicitVRLittleEndian);
     metaInfoDataElements.emplace_back(std::move(groupLengthElement));
 
     // read data elements until the amount of bytes required by File Meta Information Group Length (groupLength) are reached
     const auto groupLengthOffset = stream.tellg();
     while ((stream.tellg() - groupLengthOffset) < std::get<UnsignedLong>(groupLengthElement.value))
     {
-        metaInfoDataElements.emplace_back(readDataElement(stream, ExplicitVRLittleEndian));
+        metaInfoDataElements.emplace_back(readDataElement(stream, dict::ExplicitVRLittleEndian));
     }
 
     return FileMetaInfo(preamble, std::move(metaInfoDataElements));
@@ -416,7 +416,7 @@ Dataset readDataset(std::istream& stream, const UniqueIdentifier& transferSyntax
 
     // TODO: right now we only want to work on supporting Explicit and Implicit VR Little Endian
     // this ensures that we don't throw exceptions for the other existing tests due to missing VRs, etc.
-    if (transferSyntaxUid == ExplicitVRLittleEndian || transferSyntaxUid == ImplicitVRLittleEndian)
+    if (transferSyntaxUid == dict::ExplicitVRLittleEndian || transferSyntaxUid == dict::ImplicitVRLittleEndian)
     {
         // TODO: stream.eof() should be used here but it contains 1 more byte for dcm2??
         while (stream.tellg() < StreamUtils::availableBytes(stream))

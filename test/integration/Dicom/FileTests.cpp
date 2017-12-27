@@ -10,6 +10,8 @@ using namespace testing;
 namespace dcmcpp
 {
 
+using namespace dict;
+
 // TODO: replace hard-coded file paths
 TEST(FileTests, isDicomFile_PathToValidDicomFile_ReturnsTrue)
 {
@@ -72,19 +74,19 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
 
     const auto& dataset = dicomFile.dataset();
     const auto& datasetElements = dataset.dataElements();
-    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, InstanceCreationDate).value), Eq("20050530"));
-    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, InstanceCreationTime).value), Eq("160527"));
-    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, InstanceCreatorUid).value), Eq("1.2.276.0.7230010.3.0.3.5.3"));
-    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SopClassUid).value), Eq("1.2.840.10008.5.1.4.1.1.88.11"));
-    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SopInstanceUid).value), Eq("1.2.276.0.7230010.3.1.4.1787205428.166.1117461927.15"));
-    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, StudyDate).value), Eq(""));
-    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, ContentDate).value), Eq("20050530"));
-    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, StudyTime).value), Eq(""));
-    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, ContentTime).value), Eq("160527"));
+    EXPECT_THAT(std::get<dcmcpp::Date>(dataElement(datasetElements, InstanceCreationDate).value), Eq("20050530"));
+    EXPECT_THAT(std::get<dcmcpp::Time>(dataElement(datasetElements, InstanceCreationTime).value), Eq("160527"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, InstanceCreatorUID).value), Eq("1.2.276.0.7230010.3.0.3.5.3"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SOPClassUID).value), Eq("1.2.840.10008.5.1.4.1.1.88.11"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SOPInstanceUID).value), Eq("1.2.276.0.7230010.3.1.4.1787205428.166.1117461927.15"));
+    EXPECT_THAT(std::get<dcmcpp::Date>(dataElement(datasetElements, StudyDate).value), Eq(""));
+    EXPECT_THAT(std::get<dcmcpp::Date>(dataElement(datasetElements, ContentDate).value), Eq("20050530"));
+    EXPECT_THAT(std::get<dcmcpp::Time>(dataElement(datasetElements, StudyTime).value), Eq(""));
+    EXPECT_THAT(std::get<dcmcpp::Time>(dataElement(datasetElements, ContentTime).value), Eq("160527"));
     EXPECT_THAT(std::get<ShortString>(dataElement(datasetElements, AccessionNumber).value), Eq(""));
     EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, Modality).value), Eq("SR"));
     EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, Manufacturer).value), Eq(""));
-    EXPECT_THAT(std::get<PersonName>(dataElement(datasetElements, ReferringPhysiciansName).value), Eq("Augustus Caesar^Gaius Iulius Octavianus"));
+    EXPECT_THAT(std::get<dcmcpp::PersonName>(dataElement(datasetElements, ReferringPhysicianName).value), Eq("Augustus Caesar^Gaius Iulius Octavianus"));
 
     {
         // Coding Scheme Identifier Sequence
@@ -96,7 +98,7 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
         const auto& firstSequenceItem = sequence.items[0];
         EXPECT_THAT(firstSequenceItem.dataElements.size(), Eq(5u));
         EXPECT_THAT(std::get<ShortString>(dataElement(firstSequenceItem.dataElements, CodingSchemeDesignator).value), Eq("99_OFFIS_DCMTK"));
-        EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, CodingSchemeUid).value), Eq("1.2.276.0.7230010.3.0.0.1"));
+        EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, CodingSchemeUID).value), Eq("1.2.276.0.7230010.3.0.0.1"));
         EXPECT_THAT(std::get<ShortText>(dataElement(firstSequenceItem.dataElements, CodingSchemeName).value), Eq("OFFIS DCMTK Coding Scheme"));
         EXPECT_THAT(std::get<ShortText>(dataElement(firstSequenceItem.dataElements, CodingSchemeResponsibleOrganization).value), Eq("Kuratorium OFFIS e.V., Escherweg 2, 26121 Oldenburg, Germany"));
         EXPECT_THAT(firstSequenceItem.dataElements.back().tag, Eq(ItemDelimitationItem));
@@ -113,13 +115,13 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
         EXPECT_THAT(sequence.items.size(), Eq(0u));
     }
 
-    EXPECT_THAT(std::get<PersonName>(dataElement(datasetElements, PatientsName).value), Eq("Caesar^Gaius Iulius"));
-    EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, PatientId).value), Eq(""));
-    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, PatientsBirthDate).value), Eq(""));
-    EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, PatientsSex).value), Eq("M"));
-    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, StudyInstanceUid).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11"));
-    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SeriesInstanceUid).value), Eq("1.2.276.0.7230010.3.1.3.1787205428.166.1117461927.16"));
-    EXPECT_THAT(std::get<ShortString>(dataElement(datasetElements, StudyId).value), Eq(""));
+    EXPECT_THAT(std::get<dcmcpp::PersonName>(dataElement(datasetElements, PatientName).value), Eq("Caesar^Gaius Iulius"));
+    EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, PatientID).value), Eq(""));
+    EXPECT_THAT(std::get<dcmcpp::Date>(dataElement(datasetElements, PatientBirthDate).value), Eq(""));
+    EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, PatientSex).value), Eq("M"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, StudyInstanceUID).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SeriesInstanceUID).value), Eq("1.2.276.0.7230010.3.1.3.1787205428.166.1117461927.16"));
+    EXPECT_THAT(std::get<ShortString>(dataElement(datasetElements, StudyID).value), Eq(""));
     EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, SeriesNumber).value), Eq("1"));
     EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, InstanceNumber).value), Eq("1"));
     EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, ValueType).value), Eq("CONTAINER"));
@@ -151,8 +153,8 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
         const auto& firstSequenceItem = sequence.items[0];
         EXPECT_THAT(firstSequenceItem.dataElements.size(), Eq(5u));
         EXPECT_THAT(std::get<LongString>(dataElement(firstSequenceItem.dataElements, VerifyingOrganization).value), Eq("SPQR"));
-        EXPECT_THAT(std::get<DateTime>(dataElement(firstSequenceItem.dataElements, VerificationDateTime).value), Eq("20050530160527"));
-        EXPECT_THAT(std::get<PersonName>(dataElement(firstSequenceItem.dataElements, VerifyingObserverName).value), Eq("Augustus Caesar^Gaius Iulius Octavianus"));
+        EXPECT_THAT(std::get<dcmcpp::DateTime>(dataElement(firstSequenceItem.dataElements, VerificationDateTime).value), Eq("20050530160527"));
+        EXPECT_THAT(std::get<dcmcpp::PersonName>(dataElement(firstSequenceItem.dataElements, VerifyingObserverName).value), Eq("Augustus Caesar^Gaius Iulius Octavianus"));
 
         {
             // Verifying Observer Identification Code Sequence
@@ -192,24 +194,24 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
             ASSERT_THAT(sequence.items.size(), Eq(1u));
 
             const auto& firstSequenceItem = sequence.items[0];
-            EXPECT_THAT(std::get<ApplicationEntity>(dataElement(firstSequenceItem.dataElements, RetrieveAeTitle).value), Eq("DCMPSTATE"));
+            EXPECT_THAT(std::get<ApplicationEntity>(dataElement(firstSequenceItem.dataElements, RetrieveAETitle).value), Eq("DCMPSTATE"));
 
             {
                 // Referenced SOP Sequence
                 const auto& sequence = std::get<Sequence>(
-                    dataElement(firstSequenceItem.dataElements, ReferencedSopSequence).value);
+                    dataElement(firstSequenceItem.dataElements, ReferencedSOPSequence).value);
 
                 ASSERT_THAT(sequence.items.size(), Eq(1u));
 
                 const auto& firstSequenceItem = sequence.items[0];
-                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSopClassUid).value), Eq("1.2.840.10008.5.1.4.1.1.7"));
-                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSopInstanceUid).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11.1.1"));
+                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSOPClassUID).value), Eq("1.2.840.10008.5.1.4.1.1.7"));
+                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSOPInstanceUID).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11.1.1"));
             }
 
-            EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, SeriesInstanceUid).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11.1"));
+            EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, SeriesInstanceUID).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11.1"));
         }
 
-        EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, StudyInstanceUid).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11"));
+        EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, StudyInstanceUID).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11"));
     }
 
     {
@@ -229,24 +231,24 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
             ASSERT_THAT(sequence.items.size(), Eq(1u));
 
             const auto& firstSequenceItem = sequence.items[0];
-            EXPECT_THAT(std::get<ApplicationEntity>(dataElement(firstSequenceItem.dataElements, RetrieveAeTitle).value), Eq("DCMPSTATE"));
+            EXPECT_THAT(std::get<ApplicationEntity>(dataElement(firstSequenceItem.dataElements, RetrieveAETitle).value), Eq("DCMPSTATE"));
 
             {
                 // Referenced SOP Sequence
                 const auto& sequence = std::get<Sequence>(
-                    dataElement(firstSequenceItem.dataElements, ReferencedSopSequence).value);
+                    dataElement(firstSequenceItem.dataElements, ReferencedSOPSequence).value);
 
                 ASSERT_THAT(sequence.items.size(), Eq(1u));
 
                 const auto& firstSequenceItem = sequence.items[0];
-                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSopClassUid).value), Eq("1.2.840.10008.5.1.4.1.1.11.1"));
-                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSopInstanceUid).value), Eq("1.2.276.0.7230010.3.1.4.1707840890.221.974385531.18"));
+                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSOPClassUID).value), Eq("1.2.840.10008.5.1.4.1.1.11.1"));
+                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSOPInstanceUID).value), Eq("1.2.276.0.7230010.3.1.4.1707840890.221.974385531.18"));
             }
 
-            EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, SeriesInstanceUid).value), Eq("1.2.276.0.7230010.3.1.4.1707840890.221.974385403.16"));
+            EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, SeriesInstanceUID).value), Eq("1.2.276.0.7230010.3.1.4.1707840890.221.974385403.16"));
         }
 
-        EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, StudyInstanceUid).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11"));
+        EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, StudyInstanceUID).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11"));
     }
 
     EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, CompletionFlag).value), Eq("COMPLETE"));
@@ -264,24 +266,24 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile2_ReturnsCorrectDicomFile)
         {
             // Reference SOP Sequence
             const auto& sequence = std::get<Sequence>(
-                dataElement(firstSequenceItem.dataElements, ReferencedSopSequence).value);
+                dataElement(firstSequenceItem.dataElements, ReferencedSOPSequence).value);
 
             ASSERT_THAT(sequence.items.size(), Eq(1u));
 
             const auto& firstSequenceItem = sequence.items[0];
-            EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSopClassUid).value), Eq("1.2.840.10008.5.1.4.1.1.7"));
-            EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSopInstanceUid).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11.1.1"));
+            EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSOPClassUID).value), Eq("1.2.840.10008.5.1.4.1.1.7"));
+            EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSOPInstanceUID).value), Eq("1.2.276.0.7230010.3.4.1915765545.18030.917282194.11.1.1"));
 
             {
                 // Referenced SOP Sequence
                 const auto& sequence = std::get<Sequence>(
-                    dataElement(firstSequenceItem.dataElements, ReferencedSopSequence).value);
+                    dataElement(firstSequenceItem.dataElements, ReferencedSOPSequence).value);
 
                 ASSERT_THAT(sequence.items.size(), Eq(1u));
 
                 const auto& firstSequenceItem = sequence.items[0];
-                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSopClassUid).value), Eq("1.2.840.10008.5.1.4.1.1.11.1"));
-                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSopInstanceUid).value), Eq("1.2.276.0.7230010.3.1.4.1707840890.221.974385531.18"));
+                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSOPClassUID).value), Eq("1.2.840.10008.5.1.4.1.1.11.1"));
+                EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(firstSequenceItem.dataElements, ReferencedSOPInstanceUID).value), Eq("1.2.276.0.7230010.3.1.4.1707840890.221.974385531.18"));
             }
         }
 
@@ -659,28 +661,28 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile4_ReturnsCorrectDicomFile)
     const auto& datasetElements = dataset.dataElements();
     EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, SpecificCharacterSet).value), Eq("ISO_IR 100"));
     EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, ImageType).value), Eq(R"(ORIGINAL\PRIMARY\AXIAL)"));
-    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, InstanceCreationDate).value), Eq("1999.05.05"));
-    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, InstanceCreationTime).value), Eq("10:52:34.530000"));
-    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SopClassUid).value), Eq("1.2.840.10008.5.1.4.1.1.2"));
-    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SopInstanceUid).value), Eq("2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251"));
-    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, StudyDate).value), Eq("1999.05.05"));
-    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, SeriesDate).value), Eq("1999.05.05"));
-    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, AcquisitionDate).value), Eq("1999.05.05"));
-    EXPECT_THAT(std::get<Date>(dataElement(datasetElements, ContentDate).value), Eq("1999.05.05"));
-    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, StudyTime).value), Eq("10:52:34.530000"));
-    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, SeriesTime).value), Eq("10:52:34.530000"));
-    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, AcquisitionTime).value), Eq("10:52:34.530000"));
-    EXPECT_THAT(std::get<Time>(dataElement(datasetElements, ContentTime).value), Eq("10:52:32.510000"));
+    EXPECT_THAT(std::get<dcmcpp::Date>(dataElement(datasetElements, InstanceCreationDate).value), Eq("1999.05.05"));
+    EXPECT_THAT(std::get<dcmcpp::Time>(dataElement(datasetElements, InstanceCreationTime).value), Eq("10:52:34.530000"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SOPClassUID).value), Eq("1.2.840.10008.5.1.4.1.1.2"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SOPInstanceUID).value), Eq("2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251"));
+    EXPECT_THAT(std::get<dcmcpp::Date>(dataElement(datasetElements, StudyDate).value), Eq("1999.05.05"));
+    EXPECT_THAT(std::get<dcmcpp::Date>(dataElement(datasetElements, SeriesDate).value), Eq("1999.05.05"));
+    EXPECT_THAT(std::get<dcmcpp::Date>(dataElement(datasetElements, AcquisitionDate).value), Eq("1999.05.05"));
+    EXPECT_THAT(std::get<dcmcpp::Date>(dataElement(datasetElements, ContentDate).value), Eq("1999.05.05"));
+    EXPECT_THAT(std::get<dcmcpp::Time>(dataElement(datasetElements, StudyTime).value), Eq("10:52:34.530000"));
+    EXPECT_THAT(std::get<dcmcpp::Time>(dataElement(datasetElements, SeriesTime).value), Eq("10:52:34.530000"));
+    EXPECT_THAT(std::get<dcmcpp::Time>(dataElement(datasetElements, AcquisitionTime).value), Eq("10:52:34.530000"));
+    EXPECT_THAT(std::get<dcmcpp::Time>(dataElement(datasetElements, ContentTime).value), Eq("10:52:32.510000"));
     EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, Modality).value), Eq("CT"));
     EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, Manufacturer).value), Eq("Picker International, Inc."));
     EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, InstitutionName).value), Eq("105 HOSPITAL"));
-    EXPECT_THAT(std::get<PersonName>(dataElement(datasetElements, ReferringPhysiciansName).value), Eq("Anonymized"));
+    EXPECT_THAT(std::get<dcmcpp::PersonName>(dataElement(datasetElements, ReferringPhysicianName).value), Eq("Anonymized"));
     EXPECT_THAT(std::get<ShortString>(dataElement(datasetElements, StationName).value), Eq("Picker CT"));
     EXPECT_THAT(std::get<ShortString>(dataElement(datasetElements, StudyDescription).value), Eq(""));
-    EXPECT_THAT(std::get<PersonName>(dataElement(datasetElements, PerformingPhysicianName).value), Eq("Anonymized"));
-    EXPECT_THAT(std::get<PersonName>(dataElement(datasetElements, NameOfPhysiciansReadingStudy).value), Eq("Anonymized"));
-    EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, ManufacturersModelName).value), Eq("PQ5000"));
-    EXPECT_THAT(std::get<PersonName>(dataElement(datasetElements, PatientsName).value), Eq("Anonymized"));
+    EXPECT_THAT(std::get<dcmcpp::PersonName>(dataElement(datasetElements, PerformingPhysicianName).value), Eq("Anonymized"));
+    EXPECT_THAT(std::get<dcmcpp::PersonName>(dataElement(datasetElements, NameOfPhysiciansReadingStudy).value), Eq("Anonymized"));
+    EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, ManufacturerModelName).value), Eq("PQ5000"));
+    EXPECT_THAT(std::get<dcmcpp::PersonName>(dataElement(datasetElements, PatientName).value), Eq("Anonymized"));
     EXPECT_THAT(std::get<LongString>(dataElement(datasetElements, ContrastBolusAgent).value), Eq("C-"));
     EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, SliceThickness).value), Eq("10.0"));
     EXPECT_THAT(std::get<DecimalString>(dataElement(datasetElements, KVP).value), Eq("120"));
@@ -691,8 +693,8 @@ TEST(FileTests, readDicomFile_PathToValidDicomFile4_ReturnsCorrectDicomFile)
     EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, Exposure).value), Eq("526"));
     EXPECT_THAT(std::get<ShortString>(dataElement(datasetElements, FilterType).value), Eq("0"));
     EXPECT_THAT(std::get<CodeString>(dataElement(datasetElements, PatientPosition).value), Eq("HFS"));
-    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, StudyInstanceUid).value), Eq("2.16.840.1.113662.2.1.1519.11582.1990505.1105152"));
-    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SeriesInstanceUid).value), Eq("2.16.840.1.113662.2.1.2519.21582.2990505.2105152.2381633.20"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, StudyInstanceUID).value), Eq("2.16.840.1.113662.2.1.1519.11582.1990505.1105152"));
+    EXPECT_THAT(std::get<UniqueIdentifier>(dataElement(datasetElements, SeriesInstanceUID).value), Eq("2.16.840.1.113662.2.1.2519.21582.2990505.2105152.2381633.20"));
     EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, SeriesNumber).value), Eq("3513"));
     EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, AcquisitionNumber).value), Eq("3513"));
     EXPECT_THAT(std::get<IntegerString>(dataElement(datasetElements, InstanceNumber).value), Eq("8"));
